@@ -1,5 +1,22 @@
 # NDX Invest
 
-Android 基金记账工具，支持本地持仓、买卖记录、定投和 NDX100 行情。
+NDX Invest 是一款 Android 基金记账工具。你可以记录基金持仓和买卖、查看收益，并跟踪纳斯达克 100 指数的行情和回撤。持仓、交易和定投计划保存在手机上，无需绑定养基宝或基金销售平台。
 
-使用 JDK 17 与 Android SDK 36。设置 Android SDK 路径后运行 `gradlew.bat :app:assembleProductionDebug` 构建。
+## 主要功能
+
+- **添加基金与管理持仓**：按基金名称或代码搜索，录入已有份额和单位成本，查看持仓市值与收益。
+- **买卖与定投记账**：记录买入、卖出并设置定投计划。按对应日期的正式净值计算，缺少净值时保留待确认状态。
+- **收益分析**：查看持有收益、持有收益率和年化收益率。历史数据不足时，部分指标会显示为 `--`。
+- **NDX100 行情与回撤**：查看纳斯达克 100 指数行情、历史表现和回撤，并设置关注的回撤档位。
+
+基金搜索和正式净值使用天天基金数据。应用内的买卖及定投仅用于记账，不会向基金销售平台下单或扣款。
+
+## 从源码构建
+
+准备 JDK 17、Android SDK 36 和 Build Tools 36.0.0。在 Android Studio 中打开项目并配置 SDK，或在本地 `local.properties` 中设置 `sdk.dir`，然后运行：
+
+```powershell
+.\gradlew.bat :app:assembleProductionDebug
+```
+
+生成的 APK 位于 `app/build/outputs/apk/production/debug/`。
