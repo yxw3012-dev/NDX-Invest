@@ -1,0 +1,22 @@
+.gradle/
+.gradle-user-home-link/
+.kotlin/
+.toolchains/
+.tooling/
+.wrapper-bootstrap/
+recovery/
+NDX_Invest_Ledger_Checkpoint_*.zip
+NDX_Invest_*_Checkpoint_*.zip
+**/build/
+.idea/
+*.iml
+local.properties
+*.hprof
+**/__pycache__/
+*.pyc
+
+# Generated distribution and maintenance check output
+releases/current/*.apk
+docs/maintenance/checks/
+frontend-v2/artifacts/
+frontend-v2/dist/

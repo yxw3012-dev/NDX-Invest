@@ -1,0 +1,114 @@
+[
+  {
+    "scope": "shell",
+    "before": "<section class=\"buy-section\">\r\n            <div class=\"buy-section-label\">备注</div>\r\n            <div class=\"buy-card\">\r\n              <textarea\r\n                class=\"buy-remark\"\r\n                id=\"buyRemark\"\r\n                placeholder=\"可选，例如：回撤加仓、补仓等\"\r\n                aria-label=\"交易备注\"\r\n              ></textarea>\r\n            </div>\r\n          </section>",
+    "after": "<!-- Trade note entry removed; historical notes remain in local storage. -->"
+  },
+  {
+    "scope": "shell",
+    "before": "const buyAmount = $('buyAmount'), buyRemark = $('buyRemark'), buySubmit = $('buySubmit');",
+    "after": "const buyAmount = $('buyAmount'), buySubmit = $('buySubmit');"
+  },
+  {
+    "scope": "shell",
+    "before": "buyAmount.value = ''; buyRemark.value = '';",
+    "after": "buyAmount.value = '';",
+    "all": true
+  },
+  {
+    "scope": "shell",
+    "before": "buyAmount.value = plan.amountInput; buyRemark.value = plan.note;",
+    "after": "buyAmount.value = plan.amountInput;"
+  },
+  {
+    "scope": "shell",
+    "before": "note:buyRemark.value",
+    "after": "note:''",
+    "all": true
+  },
+  {
+    "scope": "shell",
+    "before": "returnToPlans=false;$('buyRemark').readOnly=false;$('fundSelect')",
+    "after": "returnToPlans=false;$('fundSelect')"
+  },
+  {
+    "scope": "shell",
+    "before": "applyInlinePlan(plan);$('buyRemark').readOnly=true;$('buyTitle')",
+    "after": "applyInlinePlan(plan);$('buyTitle')"
+  },
+  {
+    "scope": "shell",
+    "before": "$('buyAmount').value=plan?.amountInput||'';$('buyRemark').value=plan?.note||'';",
+    "after": "$('buyAmount').value=plan?.amountInput||'';"
+  },
+  {
+    "scope": "shell",
+    "before": "note:$('buyRemark').value,firstDate:",
+    "after": "note:'',firstDate:"
+  },
+  {
+    "scope": "shell",
+    "before": "(t.direction==='SELL'?row('确认卖出金额',t.confirmedAmount):'')+row('备注',t.note||'—')",
+    "after": "(t.direction==='SELL'?row('确认卖出金额',t.confirmedAmount):'')"
+  },
+  {
+    "scope": "shell",
+    "before": "<label class=\"v2-gap-field\">备注<textarea id=\"gapNote\">${escape(t.note||'')}</textarea></label><p id=\"gapEditError\"",
+    "after": "<p id=\"gapEditError\""
+  },
+  {
+    "scope": "shell",
+    "before": "note:$('gapNote').value",
+    "after": "note:store.getState().transactions.find(t=>t.id===store.getState().transactionDetail)?.note||''"
+  },
+  {
+    "scope": "记录",
+    "before": "<button class=\"filter\" data-filter=\"调整\">调整</button>",
+    "after": "<button class=\"filter\" data-filter=\"调整\">调整</button>\n        <button class=\"filter\" data-filter=\"初始持仓\">初始持仓</button>"
+  },
+  {
+    "scope": "记录",
+    "before": "'调仓':'adjust', '调整':'adjust'",
+    "after": "'调仓':'adjust', '调整':'adjust', '初始持仓导入':'initial'"
+  },
+  {
+    "scope": "记录",
+    "before": "const filterType = type => type === '调仓' ? '调整' : type;",
+    "after": "const filterType = type => type === '调仓' ? '调整' : type === '初始持仓导入' ? '初始持仓' : type;\n  const statusClass = row => {\n    const status=row.transactionStatus||row.status;\n    if(['SYNCED','已同步','已导入'].includes(status))return 'status-done';\n    if(['SYNC_FAILED','CANCELLED','同步失败','已撤销'].includes(status))return 'status-error';\n    if(['EXTERNAL_CHANGED','持仓发生变化'].includes(status))return 'status-warning';\n    return 'status-waiting';\n  };"
+  },
+  {
+    "scope": "记录",
+    "before": "<span class=\"amount neutral\">${escape(row.primaryText)}</span><span class=\"secondary\">${escape(row.secondaryText)}</span>",
+    "after": "<span class=\"amount neutral\">${escape(row.primaryText)}</span>"
+  },
+  {
+    "scope": "记录",
+    "before": "<span class=\"tag status-waiting\">${escape(row.status)}</span></div>${row.note ? `<div class=\"note\">${escape(row.note)}</div>` : ''}",
+    "after": "<span class=\"tag ${statusClass(row)}\">${escape(row.status)}</span></div>"
+  },
+  {
+    "scope": "记录",
+    "before": "    .status-waiting {\n      background: #f8f2e8;\n      color: #8c7650;\n    }",
+    "after": "    .status-waiting {background:#edf1f5;color:#6f7e91}\n    .status-warning {background:#f8f2e8;color:#8c7650}\n    .status-error {background:#fae2df;color:#c44a42}\n    .type-initial,.filter[data-filter=\"初始持仓\"] {background:#e5f3f1;color:#357e78}\n    .filter[data-filter=\"初始持仓\"].active {background:#357e78;color:#fff}"
+  },
+  {
+    "scope": "记录",
+    "before": "html[data-theme=\"dark\"] .status-waiting {background:var(--warning-soft);color:var(--warning)}",
+    "after": "html[data-theme=\"dark\"] .status-waiting {background:var(--surface-secondary);color:var(--text-secondary)}\n        html[data-theme=\"dark\"] .status-warning {background:var(--warning-soft);color:var(--warning)}\n        html[data-theme=\"dark\"] .status-error {background:var(--loss-soft);color:var(--loss)}\n        html[data-theme=\"dark\"] .type-initial,html[data-theme=\"dark\"] .filter[data-filter=\"初始持仓\"] {background:rgba(134,197,191,.12);color:#86C5BF}\n        html[data-theme=\"dark\"] .filter[data-filter=\"初始持仓\"].active {background:#86C5BF;color:#0F1115}"
+  },
+  {
+    "scope": "持仓",
+    "before": "--buy-soft:var(--surface-secondary);--buy-text:#7EA3FF;",
+    "after": "--buy-soft:var(--profit-soft);--buy-text:var(--profit);"
+  },
+  {
+    "scope": "持仓",
+    "before": "--sell-soft:var(--surface-secondary);--sell-text:var(--text-primary);",
+    "after": "--sell-soft:var(--loss-soft);--sell-text:var(--loss);"
+  },
+  {
+    "scope": "持仓",
+    "before": "--record-soft:var(--surface-secondary);--record-text:var(--text-secondary);",
+    "after": "--record-soft:rgba(145,176,203,.12);--record-text:#91B0CB;"
+  }
+]

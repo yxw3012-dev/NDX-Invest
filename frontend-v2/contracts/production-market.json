@@ -1,0 +1,105 @@
+{
+  "version": 2,
+  "mode": "PRODUCTION_PUBLIC_READ_ONLY",
+  "bridge": {
+    "name": "NDXMarketRead",
+    "commands": [
+      "boot",
+      "refresh"
+    ],
+    "acceptsUrls": false,
+    "acceptsCredentials": false
+  },
+  "sources": {
+    "ndxQuote": [
+      "Tencent marketStat,usNDX",
+      "Sina gb_$ndx"
+    ],
+    "usdCnyQuote": [
+      "EastMoney 121.USDCNYI",
+      "Tencent whUSDCNY"
+    ],
+    "ndxHistory": "Nasdaq NDX historical; all declared pages required"
+  },
+  "fieldOwnership": {
+    "point": "MARKET",
+    "change": "MARKET",
+    "changeRate": "MARKET",
+    "quoteTime": "MARKET",
+    "marketState": "MARKET",
+    "rate": "MARKET",
+    "history.date": "MARKET",
+    "history.close": "MARKET",
+    "source": "MARKET",
+    "fetchedAt": "LOCAL",
+    "cached": "LOCAL",
+    "cacheFailed": "LOCAL",
+    "nd100Strategy.tiers": "LOCAL",
+    "indexText": "DERIVED",
+    "changeText": "DERIVED",
+    "changePercentText": "DERIVED",
+    "fxText": "DERIVED",
+    "fxChangeText": "DERIVED",
+    "drawdownText": "DERIVED",
+    "drawdownRate": "DERIVED",
+    "performance": "DERIVED",
+    "stageName": "DERIVED",
+    "planText": "DERIVED",
+    "markerPercent": "DERIVED",
+    "drawdownBasisText": "DERIVED",
+    "refreshing": "DERIVED",
+    "refreshSucceeded": "DERIVED"
+  },
+  "precision": {
+    "raw": "BigDecimal strings",
+    "indexDisplay": "HALF_UP 2 decimals with grouping",
+    "fxDisplay": "HALF_UP 4 decimals",
+    "percentageDisplay": "HALF_UP 2 decimals",
+    "displayUsedForAccounting": false
+  },
+  "cache": {
+    "storage": "Independent app-private atomic public-data JSON file",
+    "roomSchemaChanged": false,
+    "historyFreshForHours": 24,
+    "channelsFailIndependently": true,
+    "failedRefreshClearsValues": false,
+    "preservesQuoteTime": true,
+    "preservesFetchedAt": true
+  },
+  "history": {
+    "requestedFrom": "1985-01-31",
+    "fixedPeriods": "1Y/3Y/5Y/10Y need coverage on or before anniversary",
+    "drawdown": "Use the highest official historical close in the actual available range; no inception coverage prerequisite; disclose start/end dates",
+    "unknown": "--, with no guessed active tier or investment amount",
+    "performanceBasis": "Official historical closes; actual elapsed years for CAGR, daily returns with sample variance and 252-day annualization",
+    "requestedFromIsCoverageRequirement": false,
+    "periods": [
+      "1Y",
+      "3Y",
+      "5Y",
+      "10Y"
+    ]
+  },
+  "scope": {
+    "changesFrozenHtml": "User-authorized homepage-only compact copy, refresh feedback and continuous proportional strategy scale; MAX already removed; other frozen pages unchanged",
+    "backgroundJobsAdded": false,
+    "yjbStateChanged": false,
+    "transactionExecution": false,
+    "strategyExecution": false,
+    "prototypeKeepsMock": true
+  },
+  "homePresentation": {
+    "marketStatus": "Session only, provider and cache diagnostics remain on data status page",
+    "quoteTime": "Timestamp without 行情 or appended loading text",
+    "refresh": "Arrow rotates until completion; fresh quotes and usable history enable success check; failure returns to arrow",
+    "drawdownScale": "Latest user decision: equal strategy intervals from zero to maximum; position interpolates continuously between the surrounding saved thresholds",
+    "thresholdSource": "nd100Strategy.tiers; no independent homepage threshold copy",
+    "motionMilliseconds": 500,
+    "historyScope": "Available dates remain in diagnostics and drawdown tooltip, not in performance card header",
+    "refreshCrossfadeMilliseconds": {
+      "opacity": 500,
+      "scale": 600,
+      "completedHold": 500
+    }
+  }
+}

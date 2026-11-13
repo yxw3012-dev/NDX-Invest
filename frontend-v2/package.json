@@ -1,0 +1,26 @@
+{
+  "name": "ndx-invest-frontend-v2",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Frozen Frontend V2 with Mock contracts and native Production adapters",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "start": "node scripts/serve.cjs",
+    "test": "node --test tests/contracts.test.cjs tests/production-read.test.cjs tests/production-market.test.cjs",
+    "test:browser": "node tests/browser.cjs",
+    "test:appearance": "node tests/appearance-browser.cjs",
+    "test:mine-scroll": "node tests/mine-scroll-browser.cjs",
+    "test:file": "node tests/file-smoke.cjs",
+    "test:read-browser": "node tests/production-read-browser.cjs",
+    "test:market-browser": "node tests/production-market-browser.cjs",
+    "test:bottom-refresh": "node tests/bottom-refresh-browser.cjs",
+    "test:drawdown-layout": "node tests/drawdown-layout-browser.cjs",
+    "test:touch": "node tests/touch-motion.cjs",
+    "test:round-back-motion": "node tests/round-back-motion.cjs",
+    "test:fund-sheet": "node tests/fund-name-sheet.cjs",
+    "test:holding-overview": "node tests/holding-overview.cjs",
+    "test:personal-statistics": "node tests/personal-statistics-browser.cjs",
+    "test:fund-addition": "node tests/fund-addition-browser.cjs",
+    "test:dca-queue": "node tests/dca-queue-browser.cjs"
+  }
+}

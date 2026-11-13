@@ -1,0 +1,7 @@
+[
+  {
+    "scope": "shell",
+    "before": "const tradeFunds = (state,type) => type === \"sell\" ? state.holdings : (state.fundCatalog || state.holdings);",
+    "after": "const tradeFunds = (state,type) => type === \"sell\" ? state.holdings.filter(fund => !fund.isPlaceholder) : (state.fundCatalog || state.holdings);"
+  }
+]

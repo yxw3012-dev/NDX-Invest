@@ -1,0 +1,14 @@
+{
+  "source": "D:/projects/ui/NDX-Invest/1/index.html",
+  "acceptedSourceSha256": "79329064cdc9fb78ed50b4e04202f4c733e7f49a6c00c46ab5fdf348b34866f7",
+  "projectEntry": "frontend-v2/index.html",
+  "importedAt": "2026-10-02",
+  "note": "Byte-for-byte import of the user-edited frozen final baseline; no older source regeneration. External source is provenance only, not a build dependency.",
+  "currentRevision": {
+    "canonicalEntry": "D:/projects/NDX-Invest/frontend-v2/index.html",
+    "sha256": "e3a411da9a2222fe9eb7bd085f60e59618c6f62ce4836d9d58e6731418125d10",
+    "scope": "Full Mock / Contract validation; narrow state consistency fixes; no network / Room / frozen UI change",
+    "previousProjectSha256": "6ffc791a8a716c3658440ef5b26b02e33a9e4df6b3e2140c8f5fd8d89ee1fd2d",
+    "report": "FULL_MOCK_CONTRACT_ACCEPTANCE.md"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "holdingAuthority": "YJB",
+  "placeholderAuthority": "LOCAL_CATALOG_ONLY",
+  "entry": "portfolio-level2:add|sort",
+  "search": {"method":"POST","path":"/content/v1/search/fund","input":["keyword"],"result":["fundId","code","name"]},
+  "add": {"input":["fundId","accountId","shares","unitCost"],"positive":"one verified final-position POST, then live GET verification","zero":"shares=0 and unitCost=0 persists locally, no POST","duplicate":"never overwrite an existing platform position"},
+  "writePrecision": "Bundled verified YJB operating profile; not display precision",
+  "uncertainDelivery": "durable sending intent; GET-only reconciliation, no repeat POST",
+  "firstBuy": "explicit missing baseline, ordinary NAV/calculation/conflict/verification flow; automatic synchronization after official NAV confirmation, including first placeholder BUY",
+  "placeholder": {"display":"-- except formal NAV and date","exclude":["YJB totals","XIRR","SELL","DCA creation"],"identity":"accountId+fundId","merge":"same UI id when platform holding appears","remove":"local-only, requires no pending trade and live absence"},
+  "storage": "Android Keystore AES-GCM, app-private AtomicFile; no Room migration",
+  "initialImport": "positive initial addition imports once; first BUY from absent position does not synthesize another import"
+}

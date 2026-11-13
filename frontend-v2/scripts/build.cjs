@@ -1,0 +1,11 @@
+const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
+const root = path.resolve(__dirname, '..');
+const baseline = JSON.parse(fs.readFileSync(path.join(root, 'baseline.json'), 'utf8'));
+const html = fs.readFileSync(path.join(root, 'index.html'));
+const appearance = fs.readFileSync(path.join(root, 'appearance.js'), 'utf8');
+if (!html.toString('utf8').includes('\n' + appearance + '\n</script></body>')) throw new Error('Embedded appearance source differs; keep the offline and Android palette implementation in sync.');
+const hash = crypto.createHash('sha256').update(html).digest('hex');
+if (hash !== baseline.sha256) throw new Error('Frozen Frontend V2 hash differs; re-accept intentional UI changes first.');
+fs.mkdirSync(path.join(root, 'dist'), {recursive: true});
+fs.writeFileSync(path.join(root, 'dist/index.html'), html);
+console.log(`Built frozen Frontend V2: ${html.length} bytes, SHA-256 ${hash}`);

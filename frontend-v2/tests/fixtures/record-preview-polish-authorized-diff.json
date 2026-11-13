@@ -1,0 +1,97 @@
+[
+  {
+    "scope": "持仓",
+    "before": ".action-button {\n      height: 50px;\n      border: 0;\n      border-radius: 16px;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      gap: 6px;",
+    "after": ".action-button {\n      height: 50px;\n      border: 0;\n      border-radius: 16px;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      gap: 3px;"
+  },
+  {
+    "scope": "持仓",
+    "before": ".action-icon {\n      width: 24px;\n      height: 24px;\n      border-radius: 50%;\n      display: grid;\n      place-items: center;\n      background: rgba(255,255,255,.70);",
+    "after": ".action-icon {\n      width: 18px;\n      height: 18px;\n      border-radius: 50%;\n      display: grid;\n      place-items: center;\n      background: transparent;"
+  },
+  {
+    "scope": "持仓",
+    "before": "html[data-theme=\"dark\"] .action-icon {background:var(--surface-elevated)}",
+    "after": "html[data-theme=\"dark\"] .action-icon {background:transparent}"
+  },
+  {
+    "scope": "记录",
+    "before": ".type-initial,.filter[data-filter=\"初始持仓\"] {background:#e5f3f1;color:#357e78}\n    .filter[data-filter=\"初始持仓\"].active {background:#357e78;color:#fff}",
+    "after": ".type-initial,.filter[data-filter=\"初始持仓\"] {background:#eeeaf2;color:#73617f}\n    .filter[data-filter=\"初始持仓\"].active {background:#887b98;color:#fff}"
+  },
+  {
+    "scope": "记录",
+    "before": ".status-waiting {background:#edf1f5;color:#6f7e91}",
+    "after": ".status-waiting {background:#edf2ef;color:#596e65}"
+  },
+  {
+    "scope": "记录",
+    "before": "--buy:#7EA3FF;--buy-bg:var(--accent-soft);\n          --sell:var(--text-secondary);--sell-bg:var(--surface-secondary);\n          --invest:#B3A2DC;--invest-bg:rgba(179,162,220,.12);\n          --dividend:var(--warning);--dividend-bg:var(--warning-soft);\n          --adjust:#91B0CB;--adjust-bg:rgba(145,176,203,.12);",
+    "after": "--buy:#A2BEFF;--buy-bg:#283952;\n          --sell:#F3AAAA;--sell-bg:#4A3033;\n          --invest:#C5ACE9;--invest-bg:#352943;\n          --dividend:#E5C078;--dividend-bg:#443B28;\n          --adjust:#A6BED5;--adjust-bg:#2B3B4B;"
+  },
+  {
+    "scope": "记录",
+    "before": "html[data-theme=\"dark\"] .filter[data-filter=\"卖出\"].active {background:var(--surface-elevated);color:var(--text-primary)}",
+    "after": "html[data-theme=\"dark\"] .filter[data-filter=\"买入\"].active {background:var(--buy);color:#0F1115}\n        html[data-theme=\"dark\"] .filter[data-filter=\"卖出\"].active {background:var(--sell);color:#0F1115}\n        html[data-theme=\"dark\"] .filter[data-filter=\"定投\"].active {background:var(--invest);color:#0F1115}\n        html[data-theme=\"dark\"] .filter[data-filter=\"分红\"].active {background:var(--dividend);color:#0F1115}\n        html[data-theme=\"dark\"] .filter[data-filter=\"调整\"].active {background:var(--adjust);color:#0F1115}"
+  },
+  {
+    "scope": "记录",
+    "before": "html[data-theme=\"dark\"] .status-done {background:var(--profit-soft);color:var(--profit)}\n        html[data-theme=\"dark\"] .status-waiting {background:var(--surface-secondary);color:var(--text-secondary)}\n        html[data-theme=\"dark\"] .status-warning {background:var(--warning-soft);color:var(--warning)}\n        html[data-theme=\"dark\"] .status-error {background:var(--loss-soft);color:var(--loss)}\n        html[data-theme=\"dark\"] .type-initial,html[data-theme=\"dark\"] .filter[data-filter=\"初始持仓\"] {background:rgba(134,197,191,.12);color:#86C5BF}\n        html[data-theme=\"dark\"] .filter[data-filter=\"初始持仓\"].active {background:#86C5BF;color:#0F1115}",
+    "after": "html[data-theme=\"dark\"] .status-done {background:#244333;color:#83DFB1}\n        html[data-theme=\"dark\"] .status-waiting {background:#2B3833;color:#B7C9C0}\n        html[data-theme=\"dark\"] .status-warning {background:#4A3B26;color:#F0C780}\n        html[data-theme=\"dark\"] .status-error {background:#4B2E32;color:#F4AAAA}\n        html[data-theme=\"dark\"] .type-initial,html[data-theme=\"dark\"] .filter[data-filter=\"初始持仓\"] {background:#3B3445;color:#CEC1DA}\n        html[data-theme=\"dark\"] .filter[data-filter=\"初始持仓\"].active {background:#CEC1DA;color:#0F1115}"
+  },
+  {
+    "scope": "记录",
+    "before": "  function render(state) {",
+    "after": "  // Presentation-only preview: separate DOM, never a transaction or an action target.\n  function renderColorPreview(content) {\n    let preview=document.getElementById('recordColorPreview');\n    if(parent.V2RecordPreview!==true){preview?.remove();return;}\n    if(!preview){preview=document.createElement('section');preview.id='recordColorPreview';preview.setAttribute('aria-label','标签配色示例，不是真实交易');content.append(preview);}\n    const examples=[\n      ['买入','buy','已同步','status-done','¥100.00'],\n      ['卖出','sell','同步失败','status-error','10.00 份'],\n      ['定投','invest','等待正式净值','status-waiting','¥5.00'],\n      ['分红','dividend','已同步','status-done','¥10.00'],\n      ['调整','adjust','持仓发生变化','status-warning','100.00 份'],\n      ['初始持仓','initial','已导入','status-done','100.00 份']\n    ].filter(row=>filter==='全部'||row[0]===filter);\n    preview.hidden=!examples.length;\n    preview.innerHTML='<div class=\"date-heading\"><span class=\"date-main\">配色示例</span></div><p class=\"preview-notice\">仅供查看，不是真实交易，不能操作</p>'+examples.map(([type,cls,status,state,value])=>'<div class=\"record-preview-card\"><div class=\"card\"><div class=\"card-top\"><div class=\"fund-wrap\"><span class=\"fund-name\">'+type+'示例</span></div><div class=\"value-wrap\"><span class=\"amount neutral\">'+value+'</span></div></div><div class=\"meta-row\"><span class=\"tag type-'+cls+'\">'+type+'</span><span class=\"tag '+state+'\">'+status+'</span></div></div></div>').join('');\n  }\n  function render(state) {"
+  },
+  {
+    "scope": "记录",
+    "before": "document.getElementById('empty').style.display = groups.size ? 'none' : 'block';",
+    "after": "document.getElementById('empty').style.display = groups.size ? 'none' : 'block';\n    renderColorPreview(content);"
+  },
+  {
+    "scope": "记录",
+    "before": "    .note {",
+    "after": "    #recordColorPreview {margin-top:24px}\n    .record-preview-card {margin-bottom:12px}\n    .preview-notice {color:var(--muted);font-size:12px;line-height:1.5;margin:0 0 12px}\n    html[data-theme=\"dark\"] .preview-notice {color:var(--text-secondary)}\n\n    .note {"
+  },
+  {
+    "scope": "记录",
+    "before": "background: #e4f3e9;\n      color: #3f7f5d;",
+    "after": "background: #e4f3e9;\n      color: #356e50;"
+  },
+  {
+    "scope": "记录",
+    "before": ".status-warning {background:#f8f2e8;color:#8c7650}",
+    "after": ".status-warning {background:#f8f2e8;color:#80683e}"
+  },
+  {
+    "scope": "记录",
+    "before": ".status-error {background:#fae2df;color:#c44a42}",
+    "after": ".status-error {background:#fae2df;color:#b33d37}"
+  },
+  {
+    "scope": "记录",
+    "before": "--sell: #c44a42;",
+    "after": "--sell: #a7503e;"
+  },
+  {
+    "scope": "记录",
+    "before": "--sell-bg: #fae2df;",
+    "after": "--sell-bg: #f8e5dc;"
+  },
+  {
+    "scope": "记录",
+    "before": ".status-error {background:#fae2df;color:#b33d37}",
+    "after": ".status-error {background:#f6dee8;color:#9b3158}"
+  },
+  {
+    "scope": "记录",
+    "before": "--sell:#F3AAAA;--sell-bg:#4A3033;",
+    "after": "--sell:#F0B29A;--sell-bg:#49362E;"
+  },
+  {
+    "scope": "记录",
+    "before": "html[data-theme=\"dark\"] .status-error {background:#4B2E32;color:#F4AAAA}",
+    "after": "html[data-theme=\"dark\"] .status-error {background:#492C3A;color:#F1A3C2}"
+  }
+]

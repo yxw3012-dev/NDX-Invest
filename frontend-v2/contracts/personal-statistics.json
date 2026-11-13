@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "status": "IMPLEMENTED_LOCAL_STATISTICAL_PROJECTION",
+  "canonicalUi": "frontend-v2/index.html",
+  "holdingAuthority": "YJB",
+  "transactionAuthority": "LOCAL",
+  "fieldOwnership": {
+    "initialContributions.date": "LOCAL",
+    "initialContributions.amount": "LOCAL",
+    "holdingStartDate": "LOCAL",
+    "importedAt": "LOCAL",
+    "initialShares": "YJB",
+    "initialUnitCost": "YJB",
+    "initialHoldingCost": "YJB",
+    "currentMarketValue": "YJB",
+    "valuationNavDate": "MARKET",
+    "syncedBuyAmount": "LOCAL",
+    "syncedSellNetAmount": "DERIVED",
+    "annualized": "DERIVED",
+    "cumulativeProfit": "DERIVED",
+    "cumulativeRate": "DERIVED",
+    "realizedProfit": "DERIVED",
+    "holdingDays": "DERIVED"
+  },
+  "initialInputs": {
+    "maxEntries": 10000,
+    "dateFormat": "YYYY-MM-DD",
+    "minDate": "1900-01-01",
+    "maxDate": "min(importedAt Shanghai day,today)",
+    "amountEncoding": "positive decimal string, maximum 128 characters and 32 fraction digits",
+    "differenceTolerance": "0.01",
+    "precedence": [
+      "complete nonempty initialContributions",
+      "holdingStartDate + initialHoldingCost when details empty"
+    ],
+    "mismatch": "save draft; no annual fallback",
+    "empty": "clear detail rows; preserve fallback date",
+    "immutable": [
+      "id",
+      "kind",
+      "source",
+      "fundId",
+      "fundCode",
+      "fundName",
+      "importedAt",
+      "initialShares",
+      "initialUnitCost",
+      "initialHoldingCost"
+    ]
+  },
+  "bridge": {
+    "command": "initial-contributions:",
+    "request": {
+      "id": "existing import id",
+      "requestId": "UUID",
+      "entries": "InitialContribution[]"
+    },
+    "result": "contributionResult {id,requestId,ok,message}",
+    "maxMessageChars": 1048576,
+    "networkCalls": 0,
+    "transactionCreation": false,
+    "yjbWrite": false
+  },
+  "annual": {
+    "method": "XIRR",
+    "dayBasis": 365,
+    "minimumWholePeriodDays": 90,
+    "excludeRecentContributions": false,
+    "transactionFilter": "SYNCED with syncedAt after initial import; no pre-import double count",
+    "cashFlowDates": "tradeDate under explicit user accounting assumption",
+    "buyFlow": "-amount, fee included once",
+    "sellFlow": "+netAmount, after fee",
+    "terminalFlow": "+YJB market value on official NAV belonging date",
+    "initialHistoryAssumption": "User inputs model retained initial cost; pre-import sales/dividends ignored by request",
+    "overall": "merge fund flows; active valuation dates must align; never average rates",
+    "incomplete": "-- with reason",
+    "rateSearch": {
+      "min": "-0.999999",
+      "max": "1000000",
+      "mixedFlowMaxGroupedTerms": 64,
+      "multipleRoots": "--"
+    },
+    "cashPrecision": "BigDecimal; normalized Double only for numerical rate solving"
+  },
+  "cumulative": "YJB value + post-import SYNCED sell net proceeds - imported cost - post-import SYNCED buy amounts",
+  "realized": "post-import SYNCED SELL calculatedProfit: net proceeds minus baseline cost of sold shares",
+  "cumulativeRate": "cumulativeProfit / (imported cost + post-import SYNCED buy amounts)",
+  "holdingOrigin": "earliest complete detail date or fallback date, and SYNCED BUY confirmedNavDate; never navConfirmedAt/syncedAt",
+  "completenessGuard": "initial observation + SYNCED normalized targets must explain current YJB shares/unit cost; external changes block local statistics only",
+  "persistence": "existing Keystore encrypted app-private atomic initial-import storage; optional JSON field; no Room migration",
+  "display": "HALF_UP 2 digits; raw decimal fields retain unlocalized precision",
+  "deferred": [
+    "multi-account import migration",
+    "calendar expansion",
+    "later NAV correction",
+    "signing",
+    "backup"
+  ]
+}

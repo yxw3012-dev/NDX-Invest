@@ -1,0 +1,7 @@
+[
+  {
+    "scope": "NDX100",
+    "before": "\n    html[data-theme=\"dark\"] .compact-longterm .period-slider {",
+    "after": "\n    /* 0% aligns with the track start; each threshold centers on its segment divider. */\n    .static-drawdown .static-range-labels > span {\n      justify-self: start;\n      width: max-content;\n      padding: 0;\n      white-space: nowrap;\n      overflow: visible;\n      text-overflow: clip;\n      transform: translateX(-50%);\n    }\n    .static-drawdown .static-range-labels > span:first-child { transform: none; }\n\n    html[data-theme=\"dark\"] .compact-longterm .period-slider {"
+  }
+]

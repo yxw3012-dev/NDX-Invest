@@ -1,0 +1,67 @@
+[
+  {
+    "scope": "shell",
+    "before": "window.V2Display = value => {",
+    "after": "// Display-only Beijing time formatting; raw timestamps remain immutable.\nwindow.V2DateTime = (value,dateOnly=false) => {\n const text=String(value??'--').trim()||'--';\n if(!/^\\d{4}-\\d{2}-\\d{2}T/.test(text))return dateOnly?text.slice(0,10):text;\n if(!/(?:Z|[+-]\\d{2}:?\\d{2})$/.test(text))return '--';\n const date=new Date(text);if(!Number.isFinite(date.getTime()))return '--';\n const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(date);\n const get=type=>parts.find(part=>part.type===type).value;\n const day=get('year')+'-'+get('month')+'-'+get('day');\n return dateOnly?day:day+' '+get('hour')+':'+get('minute')+':'+get('second');\n};\nwindow.V2Display = value => {"
+  },
+  {
+    "scope": "shell",
+    "before": "row('单位成本',V2Display(t.initialUnitCost))+row('初始市值',V2Display(t.initialMarketValue))+row('来源','养基宝')",
+    "after": "row('单位成本',V2Display(t.initialUnitCost))+row('来源','养基宝')"
+  },
+  {
+    "scope": "shell",
+    "before": "row('导入时间',t.importedAt)",
+    "after": "row('导入时间',V2DateTime(t.importedAt))"
+  },
+  {
+    "scope": "shell",
+    "before": "row('同步完成时间',t.syncedAt)",
+    "after": "row('同步完成时间',V2DateTime(t.syncedAt))"
+  },
+  {
+    "scope": "shell",
+    "before": "row('最后同步',a.lastSyncAt)",
+    "after": "row('最后同步',V2DateTime(a.lastSyncAt))"
+  },
+  {
+    "scope": "shell",
+    "before": "row('最后同步',h.lastSyncAt)",
+    "after": "row('最后同步',V2DateTime(h.lastSyncAt))"
+  },
+  {
+    "scope": "shell",
+    "before": "row('最后更新时间',s.dataSourceState.lastUpdatedAt)",
+    "after": "row('最后更新时间',V2DateTime(s.dataSourceState.lastUpdatedAt))"
+  },
+  {
+    "scope": "shell",
+    "before": "${escape(s.holdingsState.lastSyncAt)}",
+    "after": "${escape(V2DateTime(s.holdingsState.lastSyncAt))}"
+  },
+  {
+    "scope": "shell",
+    "before": "row('手续费','¥'+t.feeInput)",
+    "after": "row('手续费',V2Display(t.feeInput==null||t.feeInput==='--'?null:'¥'+t.feeInput))"
+  },
+  {
+    "scope": "shell",
+    "before": "row('确认 NAV',t.confirmedNav)",
+    "after": "row('确认净值',t.confirmedNav)"
+  },
+  {
+    "scope": "shell",
+    "before": "row('确认份额',t.confirmedShares)",
+    "after": "row('确认份额',V2Display(t.confirmedShares))"
+  },
+  {
+    "scope": "shell",
+    "before": "row('份额变化',t.shareDelta)",
+    "after": "row('份额变化',V2Display(t.shareDelta))"
+  },
+  {
+    "scope": "记录",
+    "before": "${escape(row.time)}",
+    "after": "${escape(parent.V2DateTime(row.time))}"
+  }
+]

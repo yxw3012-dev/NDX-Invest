@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "nyse-us-2027-cn-pending",
+  "authority": "MARKET_OFFICIAL_PARTIAL",
+  "coverageStart": "2027-01-01",
+  "coverageEnd": "2027-12-31",
+  "cnStatus": "PENDING_OFFICIAL_SCHEDULE",
+  "openDates": [],
+  "closedDates": ["2027-01-01","2027-01-18","2027-02-15","2027-03-26","2027-05-31","2027-06-18","2027-07-05","2027-09-06","2027-11-25","2027-12-24"],
+  "earlyCloseDates": ["2027-11-26"],
+  "sources": ["https://www.nyse.com/trade/hours-calendars","https://www.sse.com.cn/disclosure/dealinstruc/closed/list/"],
+  "checkedAt": "2026-10-07",
+  "notes": "Only US closures are verified. Other 2027 weekdays are unknown, not confirmed open. Early closing remains a trading day in the US; domestic availability is pending."
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "fundId": "fund-160213",
+  "sourceId": "gtfund-160213-nav-day-2026-09-28",
+  "authority": "FUND_OFFICIAL",
+  "coverageStart": "2026-09-28",
+  "coverageEnd": "2026-09-28",
+  "openDates": ["2026-09-28"],
+  "scope": "NAV valuation date only; subscriptions suspended; not an order eligibility calendar",
+  "sources": [
+    "https://st.gtfund.com/report/2026/09/国泰纳斯达克100指数证券投资基金暂停申购、定期定额投资业务的公告.pdf",
+    "https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml",
+    "https://www.nasdaq.com/market-activity/stock-market-holiday-schedule"
+  ]
+}

@@ -1,0 +1,808 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "09bf68328d43df4b1d17f4dddd8caaa1",
+    "entities": [
+      {
+        "tableName": "funds",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `code` TEXT NOT NULL, `name` TEXT NOT NULL, `shortName` TEXT NOT NULL, `fundType` TEXT NOT NULL, `trackingIndex` TEXT, `providerMetadataJson` TEXT NOT NULL, `cardStyle` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "shortName",
+            "columnName": "shortName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fundType",
+            "columnName": "fundType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trackingIndex",
+            "columnName": "trackingIndex",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "providerMetadataJson",
+            "columnName": "providerMetadataJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cardStyle",
+            "columnName": "cardStyle",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_funds_code",
+            "unique": true,
+            "columnNames": [
+              "code"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_funds_code` ON `${TABLE_NAME}` (`code`)"
+          }
+        ]
+      },
+      {
+        "tableName": "fund_rule_versions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fundId` TEXT NOT NULL, `effectiveFrom` TEXT NOT NULL, `effectiveTo` TEXT, `cutoffTime` TEXT NOT NULL, `purchaseConfirmationRule` TEXT NOT NULL, `redemptionConfirmationRule` TEXT NOT NULL, `openDayRule` TEXT NOT NULL, `purchaseFeeRuleJson` TEXT NOT NULL, `redemptionFeeScheduleJson` TEXT NOT NULL, `allocationPolicy` TEXT NOT NULL, `authority` TEXT NOT NULL, `source` TEXT NOT NULL, `fetchedAt` TEXT NOT NULL, `manualOverrideFieldsJson` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`fundId`) REFERENCES `funds`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fundId",
+            "columnName": "fundId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "effectiveFrom",
+            "columnName": "effectiveFrom",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "effectiveTo",
+            "columnName": "effectiveTo",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "cutoffTime",
+            "columnName": "cutoffTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "purchaseConfirmationRule",
+            "columnName": "purchaseConfirmationRule",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "redemptionConfirmationRule",
+            "columnName": "redemptionConfirmationRule",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "openDayRule",
+            "columnName": "openDayRule",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "purchaseFeeRuleJson",
+            "columnName": "purchaseFeeRuleJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "redemptionFeeScheduleJson",
+            "columnName": "redemptionFeeScheduleJson",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "allocationPolicy",
+            "columnName": "allocationPolicy",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "authority",
+            "columnName": "authority",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fetchedAt",
+            "columnName": "fetchedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manualOverrideFieldsJson",
+            "columnName": "manualOverrideFieldsJson",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_fund_rule_versions_fundId",
+            "unique": false,
+            "columnNames": [
+              "fundId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fund_rule_versions_fundId` ON `${TABLE_NAME}` (`fundId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "funds",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fundId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "nav_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fundId` TEXT NOT NULL, `navDate` TEXT NOT NULL, `unitNavDecimal` TEXT NOT NULL, `accumulatedNavDecimal` TEXT, `authority` TEXT NOT NULL, `source` TEXT NOT NULL, `fetchedAt` TEXT NOT NULL, PRIMARY KEY(`fundId`, `navDate`), FOREIGN KEY(`fundId`) REFERENCES `funds`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "fundId",
+            "columnName": "fundId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "navDate",
+            "columnName": "navDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unitNavDecimal",
+            "columnName": "unitNavDecimal",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accumulatedNavDecimal",
+            "columnName": "accumulatedNavDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "authority",
+            "columnName": "authority",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fetchedAt",
+            "columnName": "fetchedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "fundId",
+            "navDate"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_nav_records_fundId",
+            "unique": false,
+            "columnNames": [
+              "fundId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_nav_records_fundId` ON `${TABLE_NAME}` (`fundId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "funds",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fundId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ledger_transactions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fundId` TEXT NOT NULL, `type` TEXT NOT NULL, `status` TEXT NOT NULL, `origin` TEXT NOT NULL, `authority` TEXT NOT NULL, `applicationTime` TEXT NOT NULL, `tradeDate` TEXT NOT NULL, `navDate` TEXT, `confirmationDate` TEXT, `settlementDate` TEXT, `ruleVersionId` TEXT NOT NULL, `requestedAmountDecimal` TEXT, `grossAmountDecimal` TEXT, `netAmountDecimal` TEXT, `sharesDecimal` TEXT, `unitNavDecimal` TEXT, `purchaseFeeDecimal` TEXT, `redemptionFeeDecimal` TEXT, `actualCashFlowDecimal` TEXT, `isManualCorrected` INTEGER NOT NULL, `createdAt` TEXT NOT NULL, `updatedAt` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`fundId`) REFERENCES `funds`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`ruleVersionId`) REFERENCES `fund_rule_versions`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fundId",
+            "columnName": "fundId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origin",
+            "columnName": "origin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "authority",
+            "columnName": "authority",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "applicationTime",
+            "columnName": "applicationTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tradeDate",
+            "columnName": "tradeDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "navDate",
+            "columnName": "navDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "confirmationDate",
+            "columnName": "confirmationDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "settlementDate",
+            "columnName": "settlementDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ruleVersionId",
+            "columnName": "ruleVersionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "requestedAmountDecimal",
+            "columnName": "requestedAmountDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "grossAmountDecimal",
+            "columnName": "grossAmountDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "netAmountDecimal",
+            "columnName": "netAmountDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "sharesDecimal",
+            "columnName": "sharesDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "unitNavDecimal",
+            "columnName": "unitNavDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "purchaseFeeDecimal",
+            "columnName": "purchaseFeeDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "redemptionFeeDecimal",
+            "columnName": "redemptionFeeDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "actualCashFlowDecimal",
+            "columnName": "actualCashFlowDecimal",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isManualCorrected",
+            "columnName": "isManualCorrected",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_ledger_transactions_fundId",
+            "unique": false,
+            "columnNames": [
+              "fundId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_transactions_fundId` ON `${TABLE_NAME}` (`fundId`)"
+          },
+          {
+            "name": "index_ledger_transactions_ruleVersionId",
+            "unique": false,
+            "columnNames": [
+              "ruleVersionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_transactions_ruleVersionId` ON `${TABLE_NAME}` (`ruleVersionId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "funds",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fundId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "fund_rule_versions",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "ruleVersionId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "lots",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fundId` TEXT NOT NULL, `sourceTransactionId` TEXT NOT NULL, `type` TEXT NOT NULL, `confirmationDate` TEXT NOT NULL, `originalSharesDecimal` TEXT NOT NULL, `remainingSharesDecimal` TEXT NOT NULL, `purchaseFeeDecimal` TEXT NOT NULL, `costBasisDecimal` TEXT NOT NULL, `unitNavDecimal` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`fundId`) REFERENCES `funds`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`sourceTransactionId`) REFERENCES `ledger_transactions`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fundId",
+            "columnName": "fundId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceTransactionId",
+            "columnName": "sourceTransactionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "confirmationDate",
+            "columnName": "confirmationDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "originalSharesDecimal",
+            "columnName": "originalSharesDecimal",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remainingSharesDecimal",
+            "columnName": "remainingSharesDecimal",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "purchaseFeeDecimal",
+            "columnName": "purchaseFeeDecimal",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "costBasisDecimal",
+            "columnName": "costBasisDecimal",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unitNavDecimal",
+            "columnName": "unitNavDecimal",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_lots_fundId",
+            "unique": false,
+            "columnNames": [
+              "fundId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_lots_fundId` ON `${TABLE_NAME}` (`fundId`)"
+          },
+          {
+            "name": "index_lots_sourceTransactionId",
+            "unique": true,
+            "columnNames": [
+              "sourceTransactionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_lots_sourceTransactionId` ON `${TABLE_NAME}` (`sourceTransactionId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "funds",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fundId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "ledger_transactions",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "sourceTransactionId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "recurring_plans",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fundId` TEXT NOT NULL, `amountDecimal` TEXT NOT NULL, `frequency` TEXT NOT NULL, `scheduleRule` TEXT NOT NULL, `nonOpenDayPolicy` TEXT NOT NULL, `enabled` INTEGER NOT NULL, `lastGeneratedDate` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`fundId`) REFERENCES `funds`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fundId",
+            "columnName": "fundId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amountDecimal",
+            "columnName": "amountDecimal",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "frequency",
+            "columnName": "frequency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scheduleRule",
+            "columnName": "scheduleRule",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nonOpenDayPolicy",
+            "columnName": "nonOpenDayPolicy",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastGeneratedDate",
+            "columnName": "lastGeneratedDate",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_recurring_plans_fundId",
+            "unique": false,
+            "columnNames": [
+              "fundId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_recurring_plans_fundId` ON `${TABLE_NAME}` (`fundId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "funds",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fundId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "recurring_executions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`planId` TEXT NOT NULL, `scheduledTradeDate` TEXT NOT NULL, `transactionId` TEXT NOT NULL, PRIMARY KEY(`planId`, `scheduledTradeDate`), FOREIGN KEY(`planId`) REFERENCES `recurring_plans`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`transactionId`) REFERENCES `ledger_transactions`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "planId",
+            "columnName": "planId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scheduledTradeDate",
+            "columnName": "scheduledTradeDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "transactionId",
+            "columnName": "transactionId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "planId",
+            "scheduledTradeDate"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_recurring_executions_transactionId",
+            "unique": true,
+            "columnNames": [
+              "transactionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_recurring_executions_transactionId` ON `${TABLE_NAME}` (`transactionId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "recurring_plans",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "planId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "ledger_transactions",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "transactionId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ledger_entries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `sequence` INTEGER NOT NULL, `fundId` TEXT NOT NULL, `entryType` TEXT NOT NULL, `payloadJson` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`fundId`) REFERENCES `funds`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sequence",
+            "columnName": "sequence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fundId",
+            "columnName": "fundId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryType",
+            "columnName": "entryType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payloadJson",
+            "columnName": "payloadJson",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_ledger_entries_fundId",
+            "unique": false,
+            "columnNames": [
+              "fundId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_entries_fundId` ON `${TABLE_NAME}` (`fundId`)"
+          },
+          {
+            "name": "index_ledger_entries_sequence",
+            "unique": true,
+            "columnNames": [
+              "sequence"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_ledger_entries_sequence` ON `${TABLE_NAME}` (`sequence`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "funds",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fundId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '09bf68328d43df4b1d17f4dddd8caaa1')"
+    ]
+  }
+}

@@ -1,0 +1,739 @@
+{
+  "version": 1,
+  "status": "PROPOSED_BACKEND_PORT_CONTRACT_NOT_IMPLEMENTED",
+  "canonicalUi": "frontend-v2/index.html",
+  "holdingAuthority": "YJB",
+  "historyAuthority": "LOCAL",
+  "decimalEncoding": "base-10 string, no localized separators in backend DTO; UI formatted strings are projections only",
+  "dateContract": {
+    "navDate": "fund NAV business date YYYY-MM-DD",
+    "transactionDate": "Asia/Shanghai; before/after 15:00; market calendar resolved by future backend",
+    "timestamps": "ISO-8601 with timezone from future adapter",
+    "expectedNavDate": "nullable estimate only; current Mock uses selected date as placeholder; never official confirmation"
+  },
+  "fieldOwnership": {
+    "HoldingUiModel.id": {
+      "owner": "YJB",
+      "note": "当前持仓快照；稳定基金标识需适配映射；绝不由旧 Ledger 重建"
+    },
+    "HoldingUiModel.name": {
+      "owner": "YJB",
+      "note": "当前持仓快照；稳定基金标识需适配映射；绝不由旧 Ledger 重建"
+    },
+    "HoldingUiModel.meta": {
+      "owner": "YJB",
+      "note": "当前持仓快照；稳定基金标识需适配映射；绝不由旧 Ledger 重建"
+    },
+    "HoldingUiModel.amount": {
+      "owner": "YJB",
+      "note": "当前持仓快照；稳定基金标识需适配映射；绝不由旧 Ledger 重建"
+    },
+    "HoldingUiModel.profit": {
+      "owner": "YJB",
+      "note": "当前持仓快照；稳定基金标识需适配映射；绝不由旧 Ledger 重建"
+    },
+    "HoldingUiModel.availableSharesText": {
+      "owner": "YJB",
+      "note": "当前持仓快照；稳定基金标识需适配映射；绝不由旧 Ledger 重建"
+    },
+    "HoldingUiModel.autoInvest": {
+      "owner": "DERIVED",
+      "note": "本地计划元数据 / 当前 YJB 可用份额的输入快捷展示，不是成交结果"
+    },
+    "HoldingUiModel.sellPresets": {
+      "owner": "DERIVED",
+      "note": "本地计划元数据 / 当前 YJB 可用份额的输入快捷展示，不是成交结果"
+    },
+    "FundDetailUiModel.id": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.amount": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.cost": {
+      "owner": "YJB",
+      "note": "平台总成本，缺失时由平台单位成本 × 平台份额投影；不改写平台市值或收益。"
+    },
+    "FundDetailUiModel.shares": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.profit": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.profitRate": {
+      "owner": "DERIVED",
+      "note": "平台持有收益 / 平台成本的展示率；不是本地账本收益。"
+    },
+    "FundDetailUiModel.nav": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.navDelta": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.navDate": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.navStatus": {
+      "owner": "YJB",
+      "note": "当前平台持仓和当前净值 / 估值语义；适配器须保留价格种类与时间；交易确认不可使用这里的估值"
+    },
+    "FundDetailUiModel.avgNav": {
+      "owner": "DERIVED",
+      "note": "来自规范化平台快照或本地计划 / 交易事件的可选展示；不足以推导时显示 —；不重算当前持仓"
+    },
+    "FundDetailUiModel.autoInvest": {
+      "owner": "DERIVED",
+      "note": "来自规范化平台快照或本地计划 / 交易事件的可选展示；不足以推导时显示 —；不重算当前持仓"
+    },
+    "FundDetailUiModel.annualized": {
+      "owner": "DERIVED",
+      "note": "Production 已接通个人资金流统计；资料缺失/无法可靠求解时 --；旧 Ledger 不参与。"
+    },
+    "FundDetailUiModel.cumulativeProfit": {
+      "owner": "DERIVED",
+      "note": "Production 已接通个人资金流统计；资料缺失/无法可靠求解时 --；旧 Ledger 不参与。"
+    },
+    "FundDetailUiModel.realizedProfit": {
+      "owner": "DERIVED",
+      "note": "Production 已接通个人资金流统计；资料缺失/无法可靠求解时 --；旧 Ledger 不参与。"
+    },
+    "TransactionUiModel.id": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.fundId": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.fundName": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.dateKey": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.type": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.note": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.direction": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.transactionStatus": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.amountInput": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.timePeriod": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.feeRate": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.feeInput": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.expectedNavDate": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.confirmedShares": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.shareDelta": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.confirmedAmount": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.syncError": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.syncedAt": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.createdShares": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.createdCost": {
+      "owner": "LOCAL",
+      "note": "本地事件、创建时平台快照及业务层确认结果；金额 / 份额为十进制字符串；expectedNavDate 仅预计；结果不可用户编辑"
+    },
+    "TransactionUiModel.currentShares": {
+      "owner": "YJB",
+      "note": "同步前最新养基宝快照，用于冲突展示，不覆盖本地创建快照"
+    },
+    "TransactionUiModel.currentCost": {
+      "owner": "YJB",
+      "note": "同步前最新养基宝快照，用于冲突展示，不覆盖本地创建快照"
+    },
+    "TransactionUiModel.confirmedNavDate": {
+      "owner": "MARKET",
+      "note": "只来自正式历史 NAV 的自动确认，必须有独立 provenance 证据；不等于预计日期，不取估值"
+    },
+    "TransactionUiModel.confirmedNav": {
+      "owner": "MARKET",
+      "note": "只来自正式历史 NAV 的自动确认，必须有独立 provenance 证据；不等于预计日期，不取估值"
+    },
+    "TransactionUiModel.dateLabel": {
+      "owner": "DERIVED",
+      "note": "记录排版、文案和本地事件格式化"
+    },
+    "TransactionUiModel.weekday": {
+      "owner": "DERIVED",
+      "note": "记录排版、文案和本地事件格式化"
+    },
+    "TransactionUiModel.time": {
+      "owner": "DERIVED",
+      "note": "记录排版、文案和本地事件格式化"
+    },
+    "TransactionUiModel.status": {
+      "owner": "DERIVED",
+      "note": "记录排版、文案和本地事件格式化"
+    },
+    "TransactionUiModel.primaryText": {
+      "owner": "DERIVED",
+      "note": "记录排版、文案和本地事件格式化"
+    },
+    "TransactionUiModel.secondaryText": {
+      "owner": "DERIVED",
+      "note": "记录排版、文案和本地事件格式化"
+    },
+    "DcaPlanUiModel.id": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.fundId": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.amountInput": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.frequency": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.weekday": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.monthDay": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.firstDate": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.enabled": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.note": {
+      "owner": "LOCAL",
+      "note": "本地调度配置，不是交易；未来到期生成普通 BUY，带 originPlanId；本轮无调度"
+    },
+    "DcaPlanUiModel.nextDateText": {
+      "owner": "DERIVED",
+      "note": "调度器未来提供的下一次计划日期的格式化；当前固定 Mock 日期"
+    },
+    "Nd100UiModel.indexText": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.changeText": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.changePercentText": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.marketStatus": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.updatedText": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.fxText": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.fxChangeText": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.performance": {
+      "owner": "MARKET",
+      "note": "指数 / 汇率源，经适配格式化，不来自养基宝持仓"
+    },
+    "Nd100UiModel.drawdownText": {
+      "owner": "DERIVED",
+      "note": "指数历史和 LOCAL NDX100 策略派生展示，不触发买入"
+    },
+    "Nd100UiModel.stageName": {
+      "owner": "DERIVED",
+      "note": "指数历史和 LOCAL NDX100 策略派生展示，不触发买入"
+    },
+    "Nd100UiModel.markerPercent": {
+      "owner": "DERIVED",
+      "note": "指数历史和 LOCAL NDX100 策略派生展示，不触发买入"
+    },
+    "Nd100UiModel.planLabel": {
+      "owner": "DERIVED",
+      "note": "指数历史和 LOCAL NDX100 策略派生展示，不触发买入"
+    },
+    "Nd100UiModel.planText": {
+      "owner": "DERIVED",
+      "note": "指数历史和 LOCAL NDX100 策略派生展示，不触发买入"
+    },
+    "Nd100UiModel.stages": {
+      "owner": "DERIVED",
+      "note": "指数历史和 LOCAL NDX100 策略派生展示，不触发买入"
+    },
+    "Nd100StrategyUiModel.tiers": {
+      "owner": "LOCAL",
+      "note": "只含 drawdownThreshold 与 plannedAmount，绝无 fundId"
+    },
+    "YjbAccountUiModel.displayName": {
+      "owner": "YJB",
+      "note": "平台昵称，无凭据"
+    },
+    "YjbAccountUiModel.status": {
+      "owner": "DERIVED",
+      "note": "账户连通性及脱敏展示；禁止真实凭据进入 UiState"
+    },
+    "YjbAccountUiModel.maskedId": {
+      "owner": "DERIVED",
+      "note": "账户连通性及脱敏展示；禁止真实凭据进入 UiState"
+    },
+    "YjbAccountUiModel.errorMessage": {
+      "owner": "DERIVED",
+      "note": "账户连通性及脱敏展示；禁止真实凭据进入 UiState"
+    },
+    "YjbAccountUiModel.lastSyncAt": {
+      "owner": "LOCAL",
+      "note": "NDX 上次成功同步的本地事件时间"
+    },
+    "HoldingsStateUiModel.status": {
+      "owner": "DERIVED",
+      "note": "同步 / 缓存展示状态，加载失败不得把既有快照清空"
+    },
+    "HoldingsStateUiModel.isCached": {
+      "owner": "DERIVED",
+      "note": "同步 / 缓存展示状态，加载失败不得把既有快照清空"
+    },
+    "HoldingsStateUiModel.errorMessage": {
+      "owner": "DERIVED",
+      "note": "同步 / 缓存展示状态，加载失败不得把既有快照清空"
+    },
+    "HoldingsStateUiModel.lastSyncAt": {
+      "owner": "LOCAL",
+      "note": "成功同步记录，离线 / 错误不刷新"
+    },
+    "FrontendUiState.status": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.statusText": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.holdings": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.details": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.overview": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.transactions": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.plans": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.nd100": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.yjbAccount": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.yjbSyncState": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.holdingsState": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.dataSourceState": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.nd100Strategy": {
+      "owner": "DERIVED",
+      "note": "组合的 UI 投影；内容按子模型归属。overview.metrics 顺序：成本 / 持有收益 / 持有收益率 / 年化；不可由旧 Ledger 重建"
+    },
+    "FrontendUiState.theme": {
+      "owner": "LOCAL",
+      "note": "用户主题偏好 / 临时选中记录 ID；只有主题当前持久化"
+    },
+    "FrontendUiState.transactionDetail": {
+      "owner": "LOCAL",
+      "note": "用户主题偏好 / 临时选中记录 ID；只有主题当前持久化"
+    },
+    "TradeDraftUiModel.fundId": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.type": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.amountInput": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.date": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.feeInput": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.note": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.timePeriod": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.buyRateInput": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "TradeDraftUiModel.sellRateInput": {
+      "owner": "LOCAL",
+      "note": "用户命令草稿，普通用户不可写确认 NAV / 日期 / 份额结果"
+    },
+    "PendingTransactionEditContract.amountInput": {
+      "owner": "LOCAL",
+      "note": "WAITING_NAV 可编辑白名单"
+    },
+    "PendingTransactionEditContract.dateKey": {
+      "owner": "LOCAL",
+      "note": "WAITING_NAV 可编辑白名单"
+    },
+    "PendingTransactionEditContract.timePeriod": {
+      "owner": "LOCAL",
+      "note": "WAITING_NAV 可编辑白名单"
+    },
+    "PendingTransactionEditContract.feeRate": {
+      "owner": "LOCAL",
+      "note": "WAITING_NAV 可编辑白名单"
+    },
+    "PendingTransactionEditContract.feeInput": {
+      "owner": "LOCAL",
+      "note": "WAITING_NAV 可编辑白名单"
+    },
+    "PendingTransactionEditContract.note": {
+      "owner": "LOCAL",
+      "note": "WAITING_NAV 可编辑白名单"
+    },
+    "OfficialNavConfirmationContract.source": {
+      "owner": "MARKET",
+      "note": "正式历史净值来源和业务基金关联的证据；source 必须 OFFICIAL_HISTORY"
+    },
+    "OfficialNavConfirmationContract.fundId": {
+      "owner": "MARKET",
+      "note": "正式历史净值来源和业务基金关联的证据；source 必须 OFFICIAL_HISTORY"
+    },
+    "OfficialNavConfirmationContract.navDate": {
+      "owner": "MARKET",
+      "note": "正式历史净值来源和业务基金关联的证据；source 必须 OFFICIAL_HISTORY"
+    },
+    "OfficialNavConfirmationContract.nav": {
+      "owner": "MARKET",
+      "note": "正式历史净值来源和业务基金关联的证据；source 必须 OFFICIAL_HISTORY"
+    },
+    "OfficialNavConfirmationContract.sourceRef": {
+      "owner": "MARKET",
+      "note": "正式历史净值来源和业务基金关联的证据；source 必须 OFFICIAL_HISTORY"
+    },
+    "OfficialNavConfirmationContract.confirmedAt": {
+      "owner": "LOCAL",
+      "note": "自动确认事件处理时间，不是用户提供日期"
+    },
+    "FrontendUiState.overview.amount": {
+      "owner": "DERIVED",
+      "note": "YJB 汇总值或仅基于当前平台快照的展示合计，统一计价币种由后端明确"
+    },
+    "FrontendUiState.overview.metrics": {
+      "owner": "DERIVED",
+      "note": "平台成本 / 持有收益 / 收益率 / 可选年化的顺序格式化，不由旧 Ledger 计算"
+    },
+    "FrontendUiState.yjbSyncState.status": {
+      "owner": "DERIVED",
+      "note": "同步事件状态"
+    },
+    "FrontendUiState.yjbSyncState.lastSyncAt": {
+      "owner": "LOCAL",
+      "note": "上次成功同步时间"
+    },
+    "FrontendUiState.dataSourceState.indexStatus": {
+      "owner": "DERIVED",
+      "note": "指数源状态"
+    },
+    "FrontendUiState.dataSourceState.fxStatus": {
+      "owner": "DERIVED",
+      "note": "汇率源状态"
+    },
+    "FrontendUiState.dataSourceState.lastUpdatedAt": {
+      "owner": "DERIVED",
+      "note": "行情时间格式化"
+    },
+    "Nd100StrategyUiModel.tiers.drawdownThreshold": {
+      "owner": "LOCAL",
+      "note": "0 < threshold <= 100 且不重复"
+    },
+    "Nd100StrategyUiModel.tiers.plannedAmount": {
+      "owner": "LOCAL",
+      "note": "金额 > 0，只是提醒配置"
+    },
+    "Nd100UiModel.stages.label": {
+      "owner": "DERIVED",
+      "note": "排序编号"
+    },
+    "Nd100UiModel.stages.range": {
+      "owner": "DERIVED",
+      "note": "阈值展示"
+    },
+    "Nd100UiModel.stages.color": {
+      "owner": "DERIVED",
+      "note": "视觉标记"
+    },
+    "Nd100UiModel.stages.active": {
+      "owner": "DERIVED",
+      "note": "指数回撤与阈值对应的展示"
+    },
+    "HoldingUiModel.fundId": {
+      "owner": "YJB",
+      "note": "只读平台快照字段；缺失为 null。当前净值不用于交易确认。"
+    },
+    "HoldingUiModel.fundCode": {
+      "owner": "YJB",
+      "note": "只读平台快照字段；缺失为 null。当前净值不用于交易确认。"
+    },
+    "FundDetailUiModel.officialNav": {
+      "owner": "YJB",
+      "note": "只读平台快照字段；缺失为 null。当前净值不用于交易确认。"
+    },
+    "FundDetailUiModel.officialNavTime": {
+      "owner": "YJB",
+      "note": "只读平台快照字段；缺失为 null。当前净值不用于交易确认。"
+    },
+    "FundDetailUiModel.estimatedNav": {
+      "owner": "YJB",
+      "note": "只读平台快照字段；缺失为 null。当前净值不用于交易确认。"
+    },
+    "FundDetailUiModel.estimatedNavTime": {
+      "owner": "YJB",
+      "note": "只读平台快照字段；缺失为 null。当前净值不用于交易确认。"
+    },
+    "FrontendUiState.fundCatalog": {
+      "owner": "DERIVED",
+      "description": "YJB existing funds plus explicit account-scoped LOCAL placeholders; search results do not enter this list before confirmed addition."
+    },
+    "DcaPlanUiModel.nextDateDisplay": {
+      "owner": "DERIVED",
+      "description": "Read-only eligible or pending NAV date with calendar evidence"
+    },
+    "DcaPlanUiModel.nextStatusText": {
+      "owner": "DERIVED",
+      "description": "Waiting, future eligible, paused or unsupported evidence status"
+    },
+    "FrontendUiState.localStatistics": {
+      "owner": "DERIVED",
+      "note": "本地统计只读投影；不得覆盖养基宝当前持仓或驱动交易写入。参见 personal-statistics.json"
+    },
+    "FundDetailUiModel.cumulativeRate": {
+      "owner": "DERIVED",
+      "note": "本地统计只读投影；不得覆盖养基宝当前持仓或驱动交易写入。参见 personal-statistics.json"
+    },
+    "FundDetailUiModel.holdingStartDate": {
+      "owner": "DERIVED",
+      "note": "本地统计只读投影；不得覆盖养基宝当前持仓或驱动交易写入。参见 personal-statistics.json"
+    },
+    "FundDetailUiModel.holdingDays": {
+      "owner": "DERIVED",
+      "note": "本地统计只读投影；不得覆盖养基宝当前持仓或驱动交易写入。参见 personal-statistics.json"
+    },
+    "FundDetailUiModel.statisticsMessage": {
+      "owner": "DERIVED",
+      "note": "本地统计只读投影；不得覆盖养基宝当前持仓或驱动交易写入。参见 personal-statistics.json"
+    },
+    "FrontendUiState.initialPositions": {
+      "owner": "LOCAL",
+      "note": "首次读取观察事实不可改；只有辅助持有日期和初始投入明细可本地编辑。"
+    },
+    "HoldingUiModel.isPlaceholder": {
+      "owner": "LOCAL",
+      "description": "Explicitly registered zero local catalogue card; never a YJB holding value."
+    }
+  },
+  "accountStates": [
+    "NOT_CONNECTED",
+    "CONNECTING",
+    "LOGIN_FAILED",
+    "CONNECTED",
+    "AUTH_EXPIRED"
+  ],
+  "holdingStates": [
+    "NOT_CONNECTED",
+    "INITIAL_LOADING",
+    "READY",
+    "REFRESHING",
+    "EMPTY",
+    "ERROR",
+    "OFFLINE_CACHE",
+    "AUTH_EXPIRED"
+  ],
+  "transactionStates": [
+    "WAITING_NAV",
+    "READY_TO_SYNC",
+    "SYNCING",
+    "SYNCED",
+    "SYNC_FAILED",
+    "EXTERNAL_CHANGED",
+    "CANCELLED"
+  ],
+  "transactionActions": {
+    "WAITING_NAV": [
+      "edit",
+      "cancel"
+    ],
+    "READY_TO_SYNC": [
+      "sync"
+    ],
+    "SYNCING": [
+      "complete",
+      "fail"
+    ],
+    "SYNCED": [],
+    "SYNC_FAILED": [
+      "sync"
+    ],
+    "EXTERNAL_CHANGED": [
+      "rebase",
+      "cancel"
+    ],
+    "CANCELLED": []
+  },
+  "userEditableTransactionFields": [
+    "amountInput",
+    "dateKey",
+    "timePeriod",
+    "feeRate",
+    "feeInput",
+    "note"
+  ],
+  "userReadonlyTransactionFields": [
+    "confirmedNavDate",
+    "confirmedNav",
+    "confirmedShares",
+    "shareDelta",
+    "confirmedAmount",
+    "syncedAt"
+  ],
+  "ports": {
+    "readAccount": "redacted account UI state, no credentials",
+    "readHoldings": "YJB snapshot + stable fund mapping + source time + revision + cache metadata",
+    "readOfficialNav": "OFFICIAL_HISTORY with fundId/navDate/nav/sourceRef; never estimate",
+    "readTransactions": "NDX local history, events and stored automatic confirmation evidence",
+    "createTransaction": "BUY amount or SELL shares, local date/time period, fee input, note, idempotency key; no NAV input",
+    "editPendingTransaction": "transactionId + revision + whitelisted draft fields only",
+    "syncTransaction": "confirmed results + latest holding revision; stale conflict becomes EXTERNAL_CHANGED; no silent overwrite",
+    "managePlan": "create/update/pause/resume/delete by stable planId and fundId; dispatch NOT implemented",
+    "saveStrategy": "NDX100 index only, thresholds+amounts; no fund or BUY execution",
+    "readMarket": "NDX100 + FX snapshots with source and timestamp"
+  },
+  "navConfirmationRules": {
+    "requiredSource": "OFFICIAL_HISTORY",
+    "requiredEvidence": [
+      "source",
+      "fundId",
+      "navDate",
+      "nav",
+      "sourceRef",
+      "confirmedAt"
+    ],
+    "estimatedPriceAccepted": false,
+    "expectedDateEqualsConfirmedDateRequired": false,
+    "userConfirmationAccepted": false,
+    "readyRequiresOfficialEvidence": true
+  },
+  "prohibited": [
+    "old Ledger authority",
+    "fund search/add/delete/initialization",
+    "independent DCA plan center",
+    "real network in this phase",
+    "Room changes",
+    "automatic BUY in this phase"
+  ],
+  "examples": {
+    "officialNav": {
+      "source": "OFFICIAL_HISTORY",
+      "fundId": "gf-ndx100a",
+      "navDate": "2026-10-06",
+      "nav": "2.1234",
+      "sourceRef": "fixture://official-history/gf-ndx100a/2026-10-06",
+      "confirmedAt": "2026-10-07T09:00:00+08:00"
+    },
+    "pending": {
+      "expectedNavDate": "2026-10-02",
+      "confirmedNavDate": null,
+      "confirmedNav": null
+    }
+  },
+  "personalStatisticsContract": "personal-statistics.json"
+}

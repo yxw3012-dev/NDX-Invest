@@ -1,0 +1,19 @@
+[
+  {
+    "scope": "shell",
+    "before": "  function setNavVisible(visible) { nav.classList.toggle('is-hidden', !visible); nav.inert = !visible; }",
+    "after": "  function setNavVisible(visible) { nav.classList.toggle('is-hidden', !visible); nav.inert = !visible; }\n  function setCurrentPageBlocked(blocked) {\n    const frame = frames[currentPage];\n    if (currentPage !== '我的') { frame.inert = blocked; return; }\n    // Keep the document's native scroll target alive across WebView modal returns.\n    frame.inert = false;\n    if (frame.contentDocument?.body) frame.contentDocument.body.inert = blocked;\n    if (blocked) frame.style.pointerEvents = 'none';\n    else frame.style.removeProperty('pointer-events');\n  }"
+  },
+  {
+    "scope": "shell",
+    "before": "frames[currentPage].inert = true;",
+    "after": "setCurrentPageBlocked(true);",
+    "all": true
+  },
+  {
+    "scope": "shell",
+    "before": "frames[currentPage].inert = false;",
+    "after": "setCurrentPageBlocked(false);",
+    "all": true
+  }
+]

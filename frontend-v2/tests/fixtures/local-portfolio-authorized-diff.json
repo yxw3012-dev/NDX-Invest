@@ -1,0 +1,97 @@
+[
+  {
+    "scope": "shell",
+    "before": "const v2TransactionLabels={WAITING_NAV:'等待正式净值',READY_TO_SYNC:'待同步养基宝',SYNCING:'同步中',SYNCED:'已同步',SYNC_FAILED:'同步失败',EXTERNAL_CHANGED:'持仓发生变化',CANCELLED:'已撤销'};\nfunction v2TransactionModel(row,index=0) {\n",
+    "after": "const v2TransactionLabels={WAITING_NAV:'等待正式净值',READY_TO_SYNC:window.NDX_LOCAL_PORTFOLIO?'待记账':'待同步养基宝',SYNCING:window.NDX_LOCAL_PORTFOLIO?'记账中':'同步中',SYNCED:window.NDX_LOCAL_PORTFOLIO?'已记账':'已同步',SYNC_FAILED:window.NDX_LOCAL_PORTFOLIO?'记账失败':'同步失败',EXTERNAL_CHANGED:'持仓发生变化',CANCELLED:'已撤销'};\nfunction v2TransactionModel(row,index=0) {\n"
+  },
+  {
+    "scope": "shell",
+    "before": " const holdingLabels={NOT_CONNECTED:'连接养基宝后同步持仓',INITIAL_LOADING:'正在加载持仓',READY:'同步正常',REFRESHING:'正在刷新持仓',EMPTY:'养基宝暂无基金',ERROR:'持仓同步失败',OFFLINE_CACHE:'当前使用缓存',AUTH_EXPIRED:'养基宝登录已过期'};\n let route=null, stack=[], edit=false, settingsFund=null, fromRecords=false, fundFilter=null, dcaFund=null, dcaDraft=null, dcaError='', dcaFeedback='';\n",
+    "after": " const localPortfolio=!!window.NDX_LOCAL_PORTFOLIO;\n const holdingLabels=localPortfolio?{NOT_CONNECTED:'正在打开持仓',INITIAL_LOADING:'正在加载持仓',READY:'可用',REFRESHING:'正在刷新持仓',EMPTY:'暂无基金',ERROR:'读取失败',OFFLINE_CACHE:'当前使用缓存'}:{NOT_CONNECTED:'连接养基宝后同步持仓',INITIAL_LOADING:'正在加载持仓',READY:'同步正常',REFRESHING:'正在刷新持仓',EMPTY:'养基宝暂无基金',ERROR:'持仓同步失败',OFFLINE_CACHE:'当前使用缓存',AUTH_EXPIRED:'养基宝登录已过期'};\n let route=null, stack=[], edit=false, settingsFund=null, fromRecords=false, fundFilter=null, dcaFund=null, dcaDraft=null, dcaError='', dcaFeedback='';\n"
+  },
+  {
+    "scope": "shell",
+    "before": "  if(route==='personal')body=card(row('昵称','NDX 用户')+`<button class=\"settings-row\" data-gap-action=\"account\"><span class=\"settings-row-title\">养基宝账户</span><span class=\"settings-row-end\">${escape(accountLabels[a.status])} ›</span></button>`);\n  if(route==='account') {\n",
+    "after": "  if(route==='personal'&&localPortfolio)body=card(row('昵称','NDX 用户'));\n  else if(route==='personal')body=card(row('昵称','NDX 用户')+`<button class=\"settings-row\" data-gap-action=\"account\"><span class=\"settings-row-title\">养基宝账户</span><span class=\"settings-row-end\">${escape(accountLabels[a.status])} ›</span></button>`);\n  if(route==='account'&&localPortfolio) {route='data';$('settingsTitle').textContent='数据状态';}\n  if(route==='account') {\n"
+  },
+  {
+    "scope": "shell",
+    "before": "  if(route==='data')body=`<div class=\"settings-label\">NDX 数据</div>`+card(row('指数数据',s.dataSourceState.indexStatus)+row('汇率数据',s.dataSourceState.fxStatus)+row('最后更新时间',V2DateTime(s.dataSourceState.lastUpdatedAt)))+`<div class=\"settings-label\" style=\"margin-top:24px\">养基宝</div>`+card(row('账户状态',accountLabels[a.status])+row('持仓同步',holdingLabels[h.status])+row('最后同步',V2DateTime(h.lastSyncAt))+row('数据来源',h.isCached?'缓存 · Mock':'实时数据 · Mock'))+button('holding-sync',['REFRESHING','INITIAL_LOADING'].includes(h.status)?'正在同步…':'手动同步',a.status!=='CONNECTED'||['REFRESHING','INITIAL_LOADING'].includes(h.status))+button('account','养基宝账户')+demo('holding',Object.keys(holdingLabels),h.status);\n  if(route==='dca') {\n",
+    "after": "  if(route==='data'&&localPortfolio)body=card(row('指数数据',s.dataSourceState.indexStatus)+row('汇率数据',s.dataSourceState.fxStatus)+row('本地持仓',holdingLabels[h.status])+row('基金净值来源','天天基金'))+button('holding-sync','刷新数据',['REFRESHING','INITIAL_LOADING'].includes(h.status));\n  else if(route==='data')body=`<div class=\"settings-label\">NDX 数据</div>`+card(row('指数数据',s.dataSourceState.indexStatus)+row('汇率数据',s.dataSourceState.fxStatus)+row('最后更新时间',V2DateTime(s.dataSourceState.lastUpdatedAt)))+`<div class=\"settings-label\" style=\"margin-top:24px\">养基宝</div>`+card(row('账户状态',accountLabels[a.status])+row('持仓同步',holdingLabels[h.status])+row('最后同步',V2DateTime(h.lastSyncAt))+row('数据来源',h.isCached?'缓存 · Mock':'实时数据 · Mock'))+button('holding-sync',['REFRESHING','INITIAL_LOADING'].includes(h.status)?'正在同步…':'手动同步',a.status!=='CONNECTED'||['REFRESHING','INITIAL_LOADING'].includes(h.status))+button('account','养基宝账户')+demo('holding',Object.keys(holdingLabels),h.status);\n  if(route==='dca') {\n"
+  },
+  {
+    "scope": "shell",
+    "before": "    $('settingsTitle').textContent='初始持仓导入';body=card(row('基金',t.fundName)+row('基金代码',t.fundCode)+row('导入时间',V2DateTime(t.importedAt))+row('初始份额',V2Display(t.initialShares))+row('初始成本',V2Display(t.initialHoldingCost))+row('单位成本',V2Display(t.initialUnitCost))+row('来源','养基宝'))+card(`<form id=\"initialPositionDateForm\" class=\"v2-gap-fields\">${field('holdingStartDate','持有起始日期',t.holdingStartDate,'date')}<p id=\"initialPositionDateError\" class=\"v2-gap-error\" role=\"alert\"></p><button class=\"settings-action\" type=\"submit\">保存持有起始日期</button></form>`)+ '<!-- Initial import explanation omitted. -->';\n   }else {\n",
+    "after": "    $('settingsTitle').textContent='初始持仓导入';body=card(row('基金',t.fundName)+row('基金代码',t.fundCode)+row('导入时间',V2DateTime(t.importedAt))+row('初始份额',V2Display(t.initialShares))+row('初始成本',V2Display(t.initialHoldingCost))+row('单位成本',V2Display(t.initialUnitCost))+row('来源',localPortfolio?'本地持仓':'养基宝'))+card(`<form id=\"initialPositionDateForm\" class=\"v2-gap-fields\">${field('holdingStartDate','持有起始日期',t.holdingStartDate,'date')}<p id=\"initialPositionDateError\" class=\"v2-gap-error\" role=\"alert\"></p><button class=\"settings-action\" type=\"submit\">保存持有起始日期</button></form>`)+ '<!-- Initial import explanation omitted. -->';\n   }else {\n"
+  },
+  {
+    "scope": "shell",
+    "before": "    body=card(`<div class=\"settings-status\" role=\"status\" aria-live=\"polite\" aria-busy=\"${status==='SYNCING'}\"><strong class=\"v2-gap-status\">${status==='SYNCING'?'<span class=\"v2-gap-progress\" aria-hidden=\"true\"></span>':''}${escape(v2TransactionLabels[status])}</strong>${status==='EXTERNAL_CHANGED'?'<p>检测到养基宝持仓在交易创建后发生变化。</p>':''}${status==='SYNC_FAILED'?`<p class=\"v2-gap-error\">${escape(t.syncError)}</p>`:''}</div>`);\n    body+=card(row('基金',t.fundName)+row('交易方向',t.direction)+row(t.direction==='SELL'?'卖出份额':'买入金额',t.primaryText)+row('交易日期',t.dateKey)+row('交易时段',t.timePeriod==='after'?'15:00 后':'15:00 前')+row('手续费率',t.feeRate+'%')+row('手续费',V2Display(t.feeInput==null||t.feeInput==='--'?null:'¥'+t.feeInput))+row('确认日期',v2ConfirmationDateText(t))+row('确认净值',t.confirmedNav)+row('确认份额',V2Display(t.confirmedShares))+row('份额变化',V2Display(t.shareDelta))+(t.direction==='SELL'?row('确认卖出金额',t.confirmedAmount):''));\n",
+    "after": "    body=card(`<div class=\"settings-status\" role=\"status\" aria-live=\"polite\" aria-busy=\"${status==='SYNCING'}\"><strong class=\"v2-gap-status\">${status==='SYNCING'?'<span class=\"v2-gap-progress\" aria-hidden=\"true\"></span>':''}${escape(v2TransactionLabels[status])}</strong>${status==='EXTERNAL_CHANGED'?(localPortfolio?'<p>持仓在交易创建后发生变化。</p>':'<p>检测到养基宝持仓在交易创建后发生变化。</p>'):''}${status==='SYNC_FAILED'?`<p class=\"v2-gap-error\">${escape(t.syncError)}</p>`:''}</div>`);\n    body+=card(row('基金',t.fundName)+row('交易方向',t.direction)+row(t.direction==='SELL'?'卖出份额':'买入金额',t.primaryText)+row('交易日期',t.dateKey)+row('交易时段',t.timePeriod==='after'?'15:00 后':'15:00 前')+row('手续费率',t.feeRate+'%')+row('手续费',V2Display(t.feeInput==null||t.feeInput==='--'?null:'¥'+t.feeInput))+row('确认日期',v2ConfirmationDateText(t))+row('确认净值',t.confirmedNav)+row('确认份额',V2Display(t.confirmedShares))+row('份额变化',V2Display(t.shareDelta))+(t.direction==='SELL'?row('确认卖出金额',t.confirmedAmount):''));\n"
+  },
+  {
+    "scope": "shell",
+    "before": "    if(status==='READY_TO_SYNC')body+='<p class=\"settings-intro\">正式净值已确认，待同步养基宝。</p>'+button('tx-sync','同步养基宝');\n    if(status==='SYNCING')body+=button('tx-sync','正在同步…',true);\n",
+    "after": "    if(status==='READY_TO_SYNC')body+=(localPortfolio?'<p class=\"settings-intro\">正式净值已确认，待记账。</p>':'<p class=\"settings-intro\">正式净值已确认，待同步养基宝。</p>')+button('tx-sync',localPortfolio?'确认记账':'同步养基宝');\n    if(status==='SYNCING')body+=button('tx-sync','正在同步…',true);\n"
+  },
+  {
+    "scope": "shell",
+    "before": "    if(status==='EXTERNAL_CHANGED')body+=card(row('创建交易时份额',t.createdShares)+row('当前养基宝份额',t.currentShares)+row('创建交易时成本',t.createdCost)+row('当前养基宝成本',t.currentCost))+button('rebase','基于当前持仓重新计算')+button('cancel','取消')+'<p class=\"settings-footnote\">仅演示状态切换与快照选择，不执行真实计算。</p>';\n    body+=demo('transaction',Object.keys(v2TransactionLabels),status);\n",
+    "after": "    if(status==='EXTERNAL_CHANGED')body+=card(row('创建交易时份额',t.createdShares)+row(localPortfolio?'当前份额':'当前养基宝份额',t.currentShares)+row('创建交易时成本',t.createdCost)+row(localPortfolio?'当前成本':'当前养基宝成本',t.currentCost))+button('rebase','基于当前持仓重新计算')+button('cancel','取消')+'<p class=\"settings-footnote\">仅演示状态切换与快照选择，不执行真实计算。</p>';\n    body+=demo('transaction',Object.keys(v2TransactionLabels),status);\n"
+  },
+  {
+    "scope": "shell",
+    "before": "  doc.getElementById('hsScroll').innerHTML=`<div class=\"hs-card\"><button class=\"hs-row\" id=\"gapFundName\"><span class=\"hs-row-main\">基金名称</span><span class=\"hs-row-value\">${escape(fund.name)}</span><svg class=\"hs-name-chevron\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"m9 5 7 7-7 7\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button><!-- Fund type is intentionally omitted from presentation. --><div class=\"hs-row\"><span class=\"hs-row-main\">养基宝同步</span><span class=\"hs-row-value\">${escape(holdingLabels[s.holdingsState.status])}</span></div><div class=\"hs-row\"><span class=\"hs-row-main\">最后同步</span><span class=\"hs-row-value\">${escape(V2DateTime(s.holdingsState.lastSyncAt))}</span></div><button class=\"hs-row\" id=\"gapFundWallpaper\"><span class=\"hs-row-main\">卡片壁纸</span><span class=\"hs-chevron\">›</span></button><button class=\"hs-row\" id=\"gapFundRecords\"><span class=\"hs-row-main\">查看该基金交易记录</span><span class=\"hs-chevron\">›</span></button><button class=\"hs-row\" id=\"gapFundPlan\"><span class=\"hs-row-main\">定投状态</span><span class=\"hs-row-value\">${escape(s.plans.filter(p=>p.fundId===settingsFund).length?s.plans.filter(p=>p.fundId===settingsFund).length+' 个计划 · '+(s.plans.some(p=>p.fundId===settingsFund&&p.enabled)?'已启用':'已暂停'):'未设置')} ›</span></button><button class=\"hs-row\" id=\"gapFundDca\"><span class=\"hs-row-main\">单笔 / 定投入口</span><span class=\"hs-chevron\">›</span></button></div><p class=\"hs-note\">账户持仓由养基宝提供。</p>`;\n  if(activeId)doc.getElementById(activeId)?.focus({preventScroll:true});\n",
+    "after": "  doc.getElementById('hsScroll').innerHTML=`<div class=\"hs-card\"><button class=\"hs-row\" id=\"gapFundName\"><span class=\"hs-row-main\">基金名称</span><span class=\"hs-row-value\">${escape(fund.name)}</span><svg class=\"hs-name-chevron\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"m9 5 7 7-7 7\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button><!-- Fund type is intentionally omitted from presentation. --><div class=\"hs-row\"><span class=\"hs-row-main\">${localPortfolio?\"本地持仓\":\"养基宝同步\"}</span><span class=\"hs-row-value\">${escape(holdingLabels[s.holdingsState.status])}</span></div><div class=\"hs-row\"><span class=\"hs-row-main\">最后同步</span><span class=\"hs-row-value\">${escape(V2DateTime(s.holdingsState.lastSyncAt))}</span></div><button class=\"hs-row\" id=\"gapFundWallpaper\"><span class=\"hs-row-main\">卡片壁纸</span><span class=\"hs-chevron\">›</span></button><button class=\"hs-row\" id=\"gapFundRecords\"><span class=\"hs-row-main\">查看该基金交易记录</span><span class=\"hs-chevron\">›</span></button><button class=\"hs-row\" id=\"gapFundPlan\"><span class=\"hs-row-main\">定投状态</span><span class=\"hs-row-value\">${escape(s.plans.filter(p=>p.fundId===settingsFund).length?s.plans.filter(p=>p.fundId===settingsFund).length+' 个计划 · '+(s.plans.some(p=>p.fundId===settingsFund&&p.enabled)?'已启用':'已暂停'):'未设置')} ›</span></button><button class=\"hs-row\" id=\"gapFundDca\"><span class=\"hs-row-main\">单笔 / 定投入口</span><span class=\"hs-chevron\">›</span></button></div><p class=\"hs-note\">${localPortfolio?\"持仓保存在本机。\":\"账户持仓由养基宝提供。\"}</p>`;\n  if(activeId)doc.getElementById(activeId)?.focus({preventScroll:true});\n"
+  },
+  {
+    "scope": "shell",
+    "before": "   body=card(reminder('drawdown','回撤提醒','真实指数行情更新时检查 NDX100 策略档位；买入仍由你选择基金并确认。')+reminder('dca','定投提醒','定投确认正式净值并完成养基宝同步验证后提醒，不改变计划执行方式。')+reminder('exception','异常提醒','提示登录失效、同步失败和持仓变化等需要处理的情况。'));\n   body+='<div class=\"settings-label\">通知权限</div>'+card(row('系统通知',info?(info.notificationsAllowed?'已允许':'未允许'):(native?'读取中':'仅 App 可用'))+'<button class=\"profile-system-button\" data-notification-action=\"permission\" '+(!native?'disabled':'')+'>'+ (info?.notificationsAllowed?'查看系统通知设置 ›':'开启系统通知 ›')+'</button><button class=\"profile-system-button\" data-system-settings=\"notifications\" '+(!native?'disabled':'')+'>查看系统通知设置 ›</button><button class=\"profile-system-button\" data-notification-action=\"test\" '+(!native?'disabled':'')+'>发送测试通知 ›</button>');\n",
+    "after": "   body=card(reminder('drawdown','回撤提醒','真实指数行情更新时检查 NDX100 策略档位；买入仍由你选择基金并确认。')+reminder('dca','定投提醒','定投确认正式净值并完成记账后提醒，不改变计划执行方式。')+reminder('exception','异常提醒','提示数据读取失败、同步失败和持仓变化等需要处理的情况。'));\n   body+='<div class=\"settings-label\">通知权限</div>'+card(row('系统通知',info?(info.notificationsAllowed?'已允许':'未允许'):(native?'读取中':'仅 App 可用'))+'<button class=\"profile-system-button\" data-notification-action=\"permission\" '+(!native?'disabled':'')+'>'+ (info?.notificationsAllowed?'查看系统通知设置 ›':'开启系统通知 ›')+'</button><button class=\"profile-system-button\" data-system-settings=\"notifications\" '+(!native?'disabled':'')+'>查看系统通知设置 ›</button><button class=\"profile-system-button\" data-notification-action=\"test\" '+(!native?'disabled':'')+'>发送测试通知 ›</button>');\n"
+  },
+  {
+    "scope": "shell",
+    "before": "   body+=card(paragraph('当前持仓','当前份额、成本、市值和持有收益以养基宝返回的持仓为准。NDX 本地交易记录不用于重建或覆盖当前持仓。')+paragraph('净值与估值','正式净值用于交易确认，估值仅供展示。交易会等待符合日期规则的正式历史净值；确认日期展示 NDX 首次读取到该净值的日期，可能晚于净值所属日。')+paragraph('交易与初始持仓','买入、卖出和初始持仓导入记录由 NDX 本地保存。初始导入只记录首次观察到的持仓，不代表历史买入；交易同步更新养基宝最终持仓，不代表实际支付或到账。')+paragraph('指数与汇率','指数行情使用腾讯 / 新浪数据源，汇率使用东方财富 / 腾讯数据源，长期表现使用 Nasdaq 历史数据。行情时间以数据源返回时间为准，各来源更新速度可能不同。')+paragraph('缓存与更新时间','网络不可用时可展示最后成功快照，并标明缓存及最后同步时间。页面时间分别表示行情时间、持仓同步时间或记录时间。')+paragraph('本地展示','金额、份额和收益率按两位小数四舍五入展示，净值保留原精度；格式化后的数字不参与业务计算。自定义基金名称、壁纸、回撤策略和补充的持有起始日期保存在本地。')+paragraph('持有时间','持有起点取完整初始投入明细的最早日期（无明细时使用补充的初始日期）与已同步买入的最早正式净值所属日中较早者。读取净值及同步完成时间不作为持有起点；没有有效日期显示 --。')+paragraph('已实现收益','只统计 NDX 已同步卖出记录的计算收益：确认卖出金额扣除手续费，再减去对应份额成本；不等于已到账现金，也不包含导入之前未知的卖出历史。')+paragraph('累计收益','本地累计收益 = 当前养基宝市值 + 导入后已同步卖出净金额 − 初始成本 − 导入后已同步买入金额。简单累计收益率为累计收益除以累计投入，不是年化。按用户约定忽略导入前未知卖出和分红；养基宝有本地无法解释的份额或成本变化时暂停统计。')+paragraph('年化收益率','采用 365 天复利 XIRR，优先使用完整初始投入明细；无明细时将初始成本计在补充日期。NDX 已同步买入视为投入，卖出净金额视为取出，采用填写的交易日期，并加入估值日期的期末市值；不代表银行流水。统计区间满 90 天才展示，近期现金流仍全部参与。现金流不完整、估值日期不齐或无可靠唯一结果显示 --。'));\n  }\n",
+    "after": "   body+=card(paragraph('当前持仓','份额和成本保存在本机。市值与持有收益按已公布的基金单位净值计算。')+paragraph('净值与估值','正式净值用于交易确认，估值仅供展示。交易会等待符合日期规则的正式历史净值；确认日期展示 NDX 首次读取到该净值的日期，可能晚于净值所属日。')+paragraph('交易与初始持仓','买入、卖出和初始持仓导入记录由 NDX 本地保存。初始导入只记录首次观察到的持仓，不代表历史买入；买卖记账更新本地持仓，不代表实际支付或到账。')+paragraph('指数与汇率','指数行情使用腾讯 / 新浪数据源，汇率使用东方财富 / 腾讯数据源，长期表现使用 Nasdaq 历史数据。行情时间以数据源返回时间为准，各来源更新速度可能不同。')+paragraph('缓存与更新时间','网络不可用时可展示最后成功快照，并标明缓存及最后同步时间。页面时间分别表示行情时间、持仓同步时间或记录时间。')+paragraph('本地展示','金额、份额和收益率按两位小数四舍五入展示，净值保留原精度；格式化后的数字不参与业务计算。自定义基金名称、壁纸、回撤策略和补充的持有起始日期保存在本地。')+paragraph('持有时间','持有起点取完整初始投入明细的最早日期（无明细时使用补充的初始日期）与已同步买入的最早正式净值所属日中较早者。读取净值及同步完成时间不作为持有起点；没有有效日期显示 --。')+paragraph('已实现收益','只统计 NDX 已同步卖出记录的计算收益：确认卖出金额扣除手续费，再减去对应份额成本；不等于已到账现金，也不包含导入之前未知的卖出历史。')+paragraph('累计收益','本地累计收益 = 当前持仓市值 + 导入后已同步卖出净金额 − 初始成本 − 导入后已同步买入金额。简单累计收益率为累计收益除以累计投入，不是年化。按用户约定忽略导入前未知卖出和分红；份额或成本与交易记录不一致时暂停统计。')+paragraph('年化收益率','采用 365 天复利 XIRR，优先使用完整初始投入明细；无明细时将初始成本计在补充日期。NDX 已同步买入视为投入，卖出净金额视为取出，采用填写的交易日期，并加入估值日期的期末市值；不代表银行流水。统计区间满 90 天才展示，近期现金流仍全部参与。现金流不完整、估值日期不齐或无可靠唯一结果显示 --。'));\n  }\n"
+  },
+  {
+    "scope": "shell",
+    "before": "   body=card(paragraph('NDX Invest','专注长期 · 让投资更简单'))+card(row('当前版本',info?'v'+info.versionName:'网页预览')+row('构建号',info?.versionCode??'--')+row('运行模式',info?(info.mode==='production'?'真实数据':'演示数据'):'Frontend V2 预览')+row('Android 版本',info?.androidVersion??'--')+row('安装类型',info?(info.debug?'开发构建':'正式构建'):'--'))+card(paragraph('版本内容','Frontend V2、养基宝账户与持仓同步、本地交易记录、定投计划管理和本地外观设置。')+paragraph('更新方式','当前通过安装新版本更新，未接入自动更新。'));\n  }\n",
+    "after": "   body=card(paragraph('NDX Invest','专注长期 · 让投资更简单'))+card(row('当前版本',info?'v'+info.versionName:'网页预览')+row('构建号',info?.versionCode??'--')+row('运行模式',info?(info.mode==='production'?'真实数据':'演示数据'):'Frontend V2 预览')+row('Android 版本',info?.androidVersion??'--')+row('安装类型',info?(info.debug?'开发构建':'正式构建'):'--'))+card(paragraph('版本内容','Frontend V2、本地持仓与交易记录、定投计划管理和本地外观设置。')+paragraph('更新方式','当前通过安装新版本更新，未接入自动更新。'));\n  }\n"
+  },
+  {
+    "scope": "持仓",
+    "before": "    .metric-value.positive { color: var(--profit); }",
+    "after": "    .metric-value.positive { color: var(--profit); }\n    .holding-overview .metric-value.negative { color: var(--loss); }"
+  },
+  {
+    "scope": "持仓",
+    "before": "setSignedClass(node, node.textContent);",
+    "after": "setSignedClass(node, node.textContent);if(node.textContent==='--')node.classList.remove('negative');"
+  },
+  {
+    "scope": "shell",
+    "before": "['NOT_CONNECTED','AUTH_EXPIRED','ERROR','EMPTY'].includes(h.status)?",
+    "after": "((localPortfolio?['ERROR','EMPTY']:['NOT_CONNECTED','AUTH_EXPIRED','ERROR','EMPTY']).includes(h.status))?"
+  },
+  {
+    "scope": "shell",
+    "before": "h.status==='ERROR'?'重试':'刷新同步'",
+    "after": "h.status==='ERROR'?'重试':localPortfolio?'刷新':'刷新同步'"
+  },
+  {
+    "scope": "shell",
+    "before": "()=>['NOT_CONNECTED','AUTH_EXPIRED'].includes(h.status)?show('account',doc.getElementById('gapHoldingAction'))",
+    "after": "()=>localPortfolio?syncHolding():['NOT_CONNECTED','AUTH_EXPIRED'].includes(h.status)?show('account',doc.getElementById('gapHoldingAction'))"
+  },
+  {
+    "scope": "shell",
+    "before": "function filterRecords(){const doc=$('frameRecords').contentDocument;if(!doc)return;",
+    "after": "function filterRecords(){const doc=$('frameRecords').contentDocument;if(!doc?.getElementById('empty'))return;"
+  },
+  {
+    "scope": "持仓",
+    "before": ".holding-overview .metric-value.negative { color: var(--loss); }",
+    "after": ".holding-overview .metric-value.negative { color: var(--loss); }\n    html:not([data-theme=\"dark\"]):not([data-palette=\"pink\"]) .holding-overview .metric-value.negative { color: #bd5a58; }"
+  }
+]

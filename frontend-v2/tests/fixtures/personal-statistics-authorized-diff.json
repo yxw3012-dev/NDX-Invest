@@ -1,0 +1,37 @@
+[
+  {
+    "scope": "shell",
+    "before": "function v2HoldingTime(id,state) {\n const dates=[];",
+    "after": "function v2HoldingTime(id,state) {\n const statistics=state.localStatistics?.funds?.[id];if(statistics)return {date:statistics.holdingStartDate||'--',days:statistics.holdingDays==null?'--':statistics.holdingDays+' 天'};\n const dates=[];"
+  },
+  {
+    "scope": "shell",
+    "before": "record.kind==='INITIAL_POSITION'?record.holdingStartDate:",
+    "after": "record.kind==='INITIAL_POSITION'?(window.V2InitialContributions?window.V2InitialContributions.holdingDate(record):record.holdingStartDate):"
+  },
+  {
+    "scope": "shell",
+    "before": "paragraph('持有时间','持有起始日期取已同步买入记录的最早正式净值所属日与补充的初始持有日期中较早者。没有有效日期时显示 --，不反推历史交易。')",
+    "after": "paragraph('持有时间','持有起点取完整初始投入明细的最早日期（无明细时使用补充的初始日期）与已同步买入的最早正式净值所属日中较早者。读取净值及同步完成时间不作为持有起点；没有有效日期显示 --。')"
+  },
+  {
+    "scope": "shell",
+    "before": "paragraph('累计收益','统计范围内的已实现收益加当前持有收益。缺少完整卖出、分红或成本历史时显示 --，不将未知历史按零处理。当前持有收益仍以养基宝为准。')",
+    "after": "paragraph('累计收益','本地累计收益 = 当前养基宝市值 + 导入后已同步卖出净金额 − 初始成本 − 导入后已同步买入金额。简单累计收益率为累计收益除以累计投入，不是年化。按用户约定忽略导入前未知卖出和分红；养基宝有本地无法解释的份额或成本变化时暂停统计。')"
+  },
+  {
+    "scope": "shell",
+    "before": "paragraph('年化收益率','存在多次买入、卖出时，需要完整日期和现金流，用 XIRR 表达年化资金收益率；仅补充持有起始日期不足以计算。初始导入不伪造买入，现金流不完整、期限为零或无可靠结果时显示 --。')",
+    "after": "paragraph('年化收益率','采用 365 天复利 XIRR，优先使用完整初始投入明细；无明细时将初始成本计在补充日期。NDX 已同步买入视为投入，卖出净金额视为取出，采用填写的交易日期，并加入估值日期的期末市值；不代表银行流水。统计区间满 90 天才展示，近期现金流仍全部参与。现金流不完整、估值日期不齐或无可靠唯一结果显示 --。')"
+  },
+  {
+    "scope": "持仓",
+    "before": "<div class=\"detail-item-value positive\" id=\"l3CumulativeProfit\">+¥2,950</div>",
+    "after": "<div class=\"detail-item-value positive\" id=\"l3CumulativeProfit\">+¥2,950</div>\n              <div id=\"l3CumulativeRate\" style=\"margin-top:6px;font-size:12px;color:var(--text-secondary,#879299)\" hidden></div>"
+  },
+  {
+    "scope": "持仓",
+    "before": "        l3CumulativeProfit.textContent = parent.V2Display(data.cumulativeProfit);",
+    "after": "        l3CumulativeProfit.textContent = parent.V2Display(data.cumulativeProfit);\n        const cumulativeRate=document.getElementById('l3CumulativeRate');cumulativeRate.hidden=!data.cumulativeRate||data.cumulativeRate==='--';cumulativeRate.textContent=data.cumulativeRate&&data.cumulativeRate!=='--'?'累计收益率 '+parent.V2Display(data.cumulativeRate):'';\n        let statisticsNote=document.getElementById('l3StatisticsNote');if(!statisticsNote){statisticsNote=document.createElement('p');statisticsNote.id='l3StatisticsNote';statisticsNote.style.cssText='margin:14px 0 0;font-size:12px;line-height:1.6;color:var(--text-secondary,#879299)';l3CumulativeProfit.closest('.detail-section').append(statisticsNote);}statisticsNote.textContent=data.statisticsMessage||'';statisticsNote.hidden=!data.statisticsMessage;"
+  }
+]

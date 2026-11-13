@@ -1,0 +1,12 @@
+[
+  {
+    "scope": "shell",
+    "before": "",
+    "after": "\n// UI confirmation date is when NDX observed formal NAV; never infer from NAV day or sync time.\nfunction v2ConfirmationDateText(t) {\n if(t.confirmedNav==null)return t.transactionStatus==='CANCELLED'?'--':'待公布净值';\n if(/^\\d{4}-\\d{2}-\\d{2}$/.test(t.confirmationDate||''))return t.confirmationDate;\n if(t.navConfirmedAt){const at=new Date(t.navConfirmedAt);if(Number.isFinite(at.getTime())){const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(at),get=type=>parts.find(p=>p.type===type).value;return get('year')+'-'+get('month')+'-'+get('day');}}\n return '未记录';\n}\n"
+  },
+  {
+    "scope": "shell",
+    "before": "row('预计净值日期',t.expectedNavDate)+row('确认净值日期',t.confirmedNavDate)",
+    "after": "row('确认日期',v2ConfirmationDateText(t))"
+  }
+]
